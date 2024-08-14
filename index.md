@@ -36,7 +36,7 @@ _Follow the CMS workbook on jet analysis:_ [WorkBookJetAnalysis](https://twiki.c
 > * The exercises are prepared to be run directly from a cmslpc node, with non-interactive notebooks to follow and discuss the exercises.
 {: .testimonial}
 
-### Facilitators CMSDAS LPC 2024
+### Facilitators LPC HATS 2024
 
 <img src="fig/foto_facilitators.png" alt="" style="width:70%">
 
