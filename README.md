@@ -1,4 +1,4 @@
-# CMS Data Analysis School 2023: Jet Analysis Short Exercise 
+# HATS 2024: Jet Analysis Short Exercise 
 
 
 This repository generates the corresponding lesson website from [The Carpentries](https://carpentries.org/) repertoire of lessons. 
