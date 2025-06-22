@@ -17,7 +17,7 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/Utilities/interface/EDGetToken.h"
 #include "DataFormats/Common/interface/View.h"
-#include "DataFormats/JetReco/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/Jet.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 
@@ -36,7 +36,7 @@ class JetPlotsExample : public edm::one::EDAnalyzer<edm::one::SharedResources>
        void analyze(edm::Event const& e, edm::EventSetup const& iSetup) override;
        void endJob() override;
 
-       edm::EDGetTokenT<edm::View<reco::Jet>> jetToken_;      /// Jet source to plot
+       edm::EDGetTokenT<edm::View<pat::Jet>> jetToken_;      /// Jet source to plot
        double                   leadJetPtMin_;/// Minimum leading jet pt, in place to be above trigger threshold
        double                   jetPtMin_;    /// Minimum jet pt to plot
        bool                     plotSubstructure_; /// Plot substructure quantities? 

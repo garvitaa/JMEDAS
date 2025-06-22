@@ -19,7 +19,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////
 JetPlotsExample::JetPlotsExample(edm::ParameterSet const& cfg) :
-  jetToken_   (consumes<edm::View<reco::Jet>>(cfg.getParameter<edm::InputTag>("jetSrc"))),
+  jetToken_   (consumes<edm::View<pat::Jet>>(cfg.getParameter<edm::InputTag>("jetSrc"))),
   leadJetPtMin_ (cfg.getParameter<double>("leadJetPtMin") ),  // minimum jet pt of leading jet
   jetPtMin_ (cfg.getParameter<double>("jetPtMin") ),          // minimum jet pt of all jets
   plotSubstructure_(cfg.getParameter<bool>("plotSubstructure"))     // plot substructure? 
@@ -57,16 +57,16 @@ void JetPlotsExample::analyze(edm::Event const& evt, edm::EventSetup const& iSet
 
 
   // Get the jet collection
-  edm::Handle<edm::View<reco::Jet>> jets;
+  edm::Handle<edm::View<pat::Jet>> jets;
   evt.getByToken(jetToken_, jets);
 
   // Ensure that we have at least one jet
   if ( jets->size() < 1 ) return;
 
   // Ensure that the leading jet is above trigger threshold
-  edm::View<reco::Jet>::const_iterator ibegin = jets->begin();
-  edm::View<reco::Jet>::const_iterator iend = jets->end();
-  edm::View<reco::Jet>::const_iterator ijet = ibegin;
+  edm::View<pat::Jet>::const_iterator ibegin = jets->begin();
+  edm::View<pat::Jet>::const_iterator iend = jets->end();
+  edm::View<pat::Jet>::const_iterator ijet = ibegin;
   if ( ibegin->pt() < leadJetPtMin_ )
     return;
 
