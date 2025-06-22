@@ -7,6 +7,7 @@
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include <TFile.h>
 #include <TLorentzVector.h> 
@@ -18,11 +19,12 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////
 JetPlotsExample::JetPlotsExample(edm::ParameterSet const& cfg) :
-  jetSrc_   (cfg.getParameter<edm::InputTag>("jetSrc") ),     // jet collection to get
+  jetToken_   (consumes<edm::View<reco::Jet>>(cfg.getParameter<edm::InputTag>("jetSrc"))),
   leadJetPtMin_ (cfg.getParameter<double>("leadJetPtMin") ),  // minimum jet pt of leading jet
   jetPtMin_ (cfg.getParameter<double>("jetPtMin") ),          // minimum jet pt of all jets
   plotSubstructure_(cfg.getParameter<bool>("plotSubstructure"))     // plot substructure? 
 {
+  usesResource("TFileService");
 
   // Get the TFileService to handle plots
   edm::Service<TFileService> fileService;
@@ -55,16 +57,16 @@ void JetPlotsExample::analyze(edm::Event const& evt, edm::EventSetup const& iSet
 
 
   // Get the jet collection
-  edm::Handle<edm::View<pat::Jet> > jets;
-  evt.getByLabel(jetSrc_,jets);
+  edm::Handle<edm::View<reco::Jet>> jets;
+  evt.getByToken(jetToken_, jets);
 
   // Ensure that we have at least one jet
   if ( jets->size() < 1 ) return;
 
   // Ensure that the leading jet is above trigger threshold
-  edm::View<pat::Jet>::const_iterator ibegin = jets->begin();
-  edm::View<pat::Jet>::const_iterator iend = jets->end();
-  edm::View<pat::Jet>::const_iterator ijet = ibegin;
+  edm::View<reco::Jet>::const_iterator ibegin = jets->begin();
+  edm::View<reco::Jet>::const_iterator iend = jets->end();
+  edm::View<reco::Jet>::const_iterator ijet = ibegin;
   if ( ibegin->pt() < leadJetPtMin_ )
     return;
 
@@ -108,6 +110,23 @@ void JetPlotsExample::analyze(edm::Event const& evt, edm::EventSetup const& iSet
 void JetPlotsExample::endJob() 
 {
 }
+
+////////////////////////////////////////////////////////////////////////////////////////
+void JetPlotsExample::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+  edm::ParameterSetDescription desc;
+  desc.add<edm::InputTag>("jetSrc");
+  desc.add<double>("leadJetPtMin");
+  desc.add<double>("jetPtMin");
+  desc.add<bool>("plotSubstructure");
+  descriptions.addDefault(desc);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+const std::string& JetPlotsExample::baseType() {
+  static const std::string baseType_ = "EDAnalyzer";
+  return baseType_;
+}
+
 /////////// Register Modules ////////
 #include "FWCore/Framework/interface/MakerMacros.h"
 DEFINE_FWK_MODULE(JetPlotsExample);
