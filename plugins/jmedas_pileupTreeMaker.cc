@@ -15,6 +15,7 @@
 #include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Utilities/interface/ESGetToken.h"
+#include "FWCore/Utilities/interface/ESInputTag.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
 #include "FWCore/Utilities/interface/EDGetToken.h"
@@ -124,9 +125,6 @@ private:
   edm::EDGetTokenT< edm::ValueMap<double> >     srcPuppuMuIso_WithoutLep_CH_;
   edm::EDGetTokenT< edm::ValueMap<double> >     srcPuppuMuIso_WithoutLep_NH_;
   edm::EDGetTokenT< edm::ValueMap<double> >     srcPuppuMuIso_WithoutLep_PH_;
-  
-  // ESGetToken for JetResolutionScaleFactor
-  edm::ESGetToken<JME::JetResolutionObject, JetResolutionScaleFactorRcd> jerSFToken_;
 
   string        JERUncertainty_;
   bool          JERLegacy_;
@@ -144,6 +142,8 @@ private:
   double        ptMin_;
   double        deltaRMax_;
   double        deltaPhiMin_;
+  // ESGetToken for JetResolutionScaleFactor
+  edm::ESGetToken<JME::JetResolutionObject, JetResolutionScaleFactorRcd> jerSFToken_;
   double        deltaRPartonMax_;
   int           nref_;
 
@@ -172,10 +172,10 @@ pileupTreeMaker::pileupTreeMaker(const edm::ParameterSet& iConfig)
   , doFlavor_                                            (iConfig.getParameter<bool>              ("doFlavor"))
   , nJetMax_                                             (iConfig.getParameter<unsigned int>      ("nJetMax"))
   , ptMin_                                               (iConfig.getParameter<double>            ("ptMinFilter"))
+  , jerSFToken_(esConsumes<JME::JetResolutionObject, JetResolutionScaleFactorRcd>(edm::ESInputTag("", iConfig.getParameter<std::string>("jetType"))))
   , deltaRMax_(0.0)
   , deltaPhiMin_(3.141)
   , deltaRPartonMax_(0.0)
-  , jerSFToken_(esConsumes<JME::JetResolutionObject, JetResolutionScaleFactorRcd>(edm::es::Label(iConfig.getParameter<std::string>("jetType"))))
 {
 
    if(iConfig.exists("srcMuons")) {
