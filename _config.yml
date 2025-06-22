@@ -23,7 +23,7 @@ title: "CMSDAS@IIT Hyderabad 2025: Jets Short Exercise"
 # 'transition-step-2': notice encouraging to use new version
 # 'transition-step-3': notice indicating the lesson is deprecated,
 #                      with automated redirect
-life_cycle: "beta"
+life_cycle: "stable"
 
 # For lessons in the life stages in 'transition-step-1' or later:
 # - 'transition_url' holds the URL for the version of the lesson that
