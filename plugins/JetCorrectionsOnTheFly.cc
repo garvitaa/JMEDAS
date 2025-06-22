@@ -7,21 +7,21 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
 
-#include "FWCore/Framework/interface/Event.h"
-#include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include <TFile.h>
 #include <cmath>
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
 JetCorrectionsOnTheFly::JetCorrectionsOnTheFly(edm::ParameterSet const& cfg) :
-  jetSrc_   (cfg.getParameter<edm::InputTag>("jetSrc") ),                             // jet collection to get
-  rhoSrc_   (cfg.getParameter<edm::InputTag>("rhoSrc") ),                             // mean pt per unit area (rho) collection to get
-  pvSrc_    (cfg.getParameter<edm::InputTag>("pvSrc") ),                              // primary vertex collection to get
+  jetToken_   (consumes<edm::View<reco::Jet>>(cfg.getParameter<edm::InputTag>("jetSrc"))),
+  rhoToken_   (consumes<double>(cfg.getParameter<edm::InputTag>("rhoSrc"))),
+  pvToken_    (consumes<std::vector<reco::Vertex>>(cfg.getParameter<edm::InputTag>("pvSrc"))),
   jecPayloadNames_( cfg.getParameter<std::vector<std::string> >("jecPayloadNames") ), // JEC level payloads
   jecUncName_( cfg.getParameter<std::string>("jecUncName") )                          // JEC uncertainties
 {
+  usesResource("TFileService");
 
   // Get the TFileService to handle plots
   edm::Service<TFileService> fileService;
@@ -52,16 +52,16 @@ void JetCorrectionsOnTheFly::beginJob()
 void JetCorrectionsOnTheFly::analyze(edm::Event const& evt, edm::EventSetup const& iSetup) 
 {
   // Get the jets
-  edm::Handle< edm::View<reco::Jet> > h_jets;
-  evt.getByLabel( jetSrc_, h_jets );
+  edm::Handle<edm::View<reco::Jet>> h_jets;
+  evt.getByToken( jetToken_, h_jets );
 
   // Get the mean pt per unit area ("rho")
-  edm::Handle< double > h_rho;
-  evt.getByLabel( rhoSrc_, h_rho );
+  edm::Handle<double> h_rho;
+  evt.getByToken( rhoToken_, h_rho );
 
   // Get the primary vertex collection
-  edm::Handle< std::vector<reco::Vertex> > h_pv;
-  evt.getByLabel( pvSrc_, h_pv );  
+  edm::Handle<std::vector<reco::Vertex>> h_pv;
+  evt.getByToken( pvToken_, h_pv );  
 
   // Loop over jets, get the correction, and plot
   // the corrected jet pt
@@ -115,6 +115,24 @@ void JetCorrectionsOnTheFly::analyze(edm::Event const& evt, edm::EventSetup cons
 void JetCorrectionsOnTheFly::endJob() 
 {
 }
+
+////////////////////////////////////////////////////////////////////////////////////////
+void JetCorrectionsOnTheFly::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+  edm::ParameterSetDescription desc;
+  desc.add<edm::InputTag>("jetSrc");
+  desc.add<edm::InputTag>("rhoSrc");
+  desc.add<edm::InputTag>("pvSrc");
+  desc.add<std::vector<std::string>>("jecPayloadNames");
+  desc.add<std::string>("jecUncName");
+  descriptions.addDefault(desc);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+const std::string& JetCorrectionsOnTheFly::baseType() {
+  static const std::string baseType_ = "EDAnalyzer";
+  return baseType_;
+}
+
 /////////// Register Modules ////////
 #include "FWCore/Framework/interface/MakerMacros.h"
 DEFINE_FWK_MODULE(JetCorrectionsOnTheFly);
