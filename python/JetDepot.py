@@ -10,7 +10,7 @@ def JetDepot(process, sequence, JetTag, JetType, jecUncDir=0, doSmear=True, jerU
     if hasattr(process,sequence):
         theSequence = getattr(process,sequence)
     else:
-        print "Unknown sequence: "+sequence
+        print("Unknown sequence: "+sequence)
         return
 
     # starting value

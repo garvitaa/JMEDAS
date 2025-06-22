@@ -28,7 +28,7 @@ uperpPUPPIHist = TH1F("uPerpPUPPI", "uPerpPUPPI;Perpendicular Recoil [GeV];Event
 uparlPUPPIHist = TH1F("uParlPUPPI", "uParl;Parallel Recoil [GeV];Events", 50, -100, 100)
 
 
-for entry in xrange(entries):
+for entry in range(entries):
 
 	ientry = tree.LoadTree( entry )
 	if ientry < 0:

@@ -66,7 +66,7 @@ def MakeCanvas(dataHists = [], MCHist = TH1F(), weightHists = [], filename = "")
     #Reweight the MC histogram
     MCHist_reweighted = MCHist.Clone("hMC25ns_reweighted")
     MCHist_reweighted.SetDirectory(None)
-    for b in xrange(1,int(MCHist.GetNbinsX()+1)):
+    for b in range(1,int(MCHist.GetNbinsX()+1)):
         MCHist_reweighted.SetBinContent(b,MCHist_reweighted.GetBinContent(b)*weightHists[0].GetBinContent(b))
 
     #Make TGraphAsymmErrors for the statistical+systematic error bands
@@ -77,7 +77,7 @@ def MakeCanvas(dataHists = [], MCHist = TH1F(), weightHists = [], filename = "")
     ex_down = array.array('f',[])
     ey_up   = array.array('f',[])
     ey_down = array.array('f',[])
-    for b in xrange(1,int(dataHists[0].GetNbinsX()+1)):
+    for b in range(1,int(dataHists[0].GetNbinsX()+1)):
         x.append(dataHists[0].GetBinCenter(b))
         y.append(dataHists[0].GetBinContent(b))
         ex_up.append(0.5)
@@ -97,7 +97,7 @@ def MakeCanvas(dataHists = [], MCHist = TH1F(), weightHists = [], filename = "")
     ex_down = array.array('f',[])
     ey_up   = array.array('f',[])
     ey_down = array.array('f',[])
-    for b in xrange(1,int(weightHists[0].GetNbinsX()+1)):
+    for b in range(1,int(weightHists[0].GetNbinsX()+1)):
         x.append(weightHists[0].GetBinCenter(b))
         y.append(weightHists[0].GetBinContent(b))
         ex_up.append(0.5)
@@ -131,7 +131,7 @@ def MakeCanvas(dataHists = [], MCHist = TH1F(), weightHists = [], filename = "")
     #Set the canvas to own the histograms and graphs which are drawn
     hold_pointers_to_implicit_members(c)
 
-    print "Canvas Successfully Made!"
+    print("Canvas Successfully Made!")
     return c
 
 # ------------------------------------------------------------
@@ -188,7 +188,7 @@ if __name__ == "__main__":
 
     # MC histo
     hMC25ns = TH1F("hMC25ns", "", int(options.nbins), 0, int(options.nbins))
-    for b in xrange(0,int(options.nbins)):
+    for b in range(0,int(options.nbins)):
         hMC25ns.SetBinContent(b+1,probvalue[b] if b < len(probvalue) else 0)
         hMC25ns.SetBinError(b+1,0)
     hMC25ns.Scale(1/hMC25ns.Integral(1,int(options.nbins)))

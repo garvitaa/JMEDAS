@@ -13,20 +13,20 @@ def get_commands():
     return command_dict
 
 def main(debug = False):
-    print "Starting to run a series of cmsRun commands ... "
+    print("Starting to run a series of cmsRun commands ... ")
 
     command_dict = get_commands()
     child_filenames = []
     procs = []
-    for name, cmd in command_dict.iteritems():
+    for name, cmd in command_dict.items():
         if cmd.find("ofilename=") or cmd.startswith("ofilename="):
             child_filenames.append(cmd.split("ofilename=")[1].split()[0])
         else:
             child_filenames.append("JECNtuple.root")
 
-        command = "nohup cmsRun jmehats_JEC.py print " + cmd + " maxEvents=10000 applyDBFile=1 doJetToolbox=1 era=Fall17_17Nov2017_V32_94X_MC jerfile=Fall17_V3_94X_MC doReclustering=1"
+        command = "nohup cmsRun jmehats_JEC.py print " + cmd + " maxEvents=10000 applyDBFile=1 doJetToolbox=1 era=Fall17_17Nov2017_V32_94X_MC jerfile=Fall17_V3_94X_MC doReclustering=1")
         if debug:
-            print "The current command is",command
+            print("The current command is",command)
         out=open(name+".log","w")
         procs.append(subprocess.Popen(shlex.split(command), shell=False, stdout=out, stderr=subprocess.STDOUT))
 
@@ -36,12 +36,12 @@ def main(debug = False):
     out.close()
 
     if return_code_sum==0:
-        print "All ntuples created successfully!"
-        print "The ntuples created are named:"
+        print("All ntuples created successfully!")
+        print("The ntuples created are named:")
         for n in child_filenames:
-            print "\t"+n
+            print("\t"+n)
     else:
-        print "One or more of the ntuples were not created successfully :("
+        print("One or more of the ntuples were not created successfully :(")
         exit(-1)
 
 if __name__ == '__main__':

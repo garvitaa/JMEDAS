@@ -85,19 +85,19 @@ options.parseArguments()
 
 #Check the options
 if options.doJetToolbox and not options.doReclustering:
-	print bcolors.FAIL+"ERROR::In order to use the JetToolbox you must be willing to recluster your jets."+bcolors.ENDC
+	print(bcolors.FAIL+"ERROR::In order to use the JetToolbox you must be willing to recluster your jets."+bcolors.ENDC)
 	exit(-4)
 elif options.useUpdater and not options.doMiniAOD and not options.doJetToolbox:
-	print bcolors.FAIL+"ERROR::Right now only reco::Jets come out of the PFBRECO method."+bcolors.ENDC
-	print bcolors.FAIL+"\tThe patJetUpdater can't use reco::Jets and can onlyuse as input pat::Jets"+bcolors.ENDC
+	print(bcolors.FAIL+"ERROR::Right now only reco::Jets come out of the PFBRECO method."+bcolors.ENDC)
+	print(bcolors.FAIL+"\tThe patJetUpdater can't use reco::Jets and can onlyuse as input pat::Jets"+bcolors.ENDC)
 	exit(-5)
 elif options.doMiniAOD and options.doReclustering and options.useUpdater:
-	print bcolors.FAIL+"ERROR::This option will already have the latest corrections applied."+bcolors.ENDC
-	print bcolors.FAIL+"\tNo need to use the patJetUpdater."+bcolors.ENDC
+	print(bcolors.FAIL+"ERROR::This option will already have the latest corrections applied."+bcolors.ENDC)
+	print(bcolors.FAIL+"\tNo need to use the patJetUpdater."+bcolors.ENDC)
 	exit(-6)
 elif not options.doMiniAOD and options.doReclustering and options.useUpdater:
-	print bcolors.FAIL+"ERROR::This option will already have the latest corrections applied."+bcolors.ENDC
-	print bcolors.FAIL+"\tNo need to use the patJetUpdater."+bcolors.ENDC
+	print(bcolors.FAIL+"ERROR::This option will already have the latest corrections applied."+bcolors.ENDC)
+	print(bcolors.FAIL+"\tNo need to use the patJetUpdater."+bcolors.ENDC)
 	exit(-7)
 
 dataTier = "AOD"
@@ -177,9 +177,9 @@ for name, params in jetsCollectionsSorted.items():
 		csCounter[params['algo']] = 1
 	else:
 		csCounter[params['algo']]+=1
-if any(v > 1 for v in csCounter.itervalues()):
-	print bcolors.FAIL+"NOTE: This code has a problem running multiple collections of the same cone size."+bcolors.ENDC
-	print "\tPlease choose one!"
+if any(v > 1 for v in csCounter.values()):
+	print(bcolors.FAIL+"NOTE: This code has a problem running multiple collections of the same cone size."+bcolors.ENDC)
+	print("\tPlease choose one!")
 	exit(-3)
 
 maxA = maxJC = maxJP = maxCL = 0
@@ -209,13 +209,13 @@ for name, params in jetsCollections.items():
 		if options.doMiniAOD and not options.doReclustering:
 			doExit = False
 			if not any(alg in params['algo'] for alg in ['ak4','ak8']):
-				print bcolors.FAIL+"ERROR::Can't continue because doReclustering is set to False and the 2017 MiniAOD files only contain AK4 and AK8 jets"+bcolors.ENDC
+				print(bcolors.FAIL+"ERROR::Can't continue because doReclustering is set to False and the 2017 MiniAOD files only contain AK4 and AK8 jets"+bcolors.ENDC)
 				doExit = True
 			if params['algo'] == 'ak4' and not any(pu in pu_method for pu in ['CHS','Puppi']):
-				print bcolors.FAIL+"ERROR::Can't continue because doReclustering is set to False and the 2017 MiniAOD files only have AK4 jets using CHS or PFPuppi"+bcolors.ENDC
+				print(bcolors.FAIL+"ERROR::Can't continue because doReclustering is set to False and the 2017 MiniAOD files only have AK4 jets using CHS or PFPuppi"+bcolors.ENDC)
 				doExit = True
 			if params['algo'] == 'ak8' and pu_method!='Puppi':
-				print bcolors.FAIL+"ERROR::Can't continue because doReclustering is set to False and the 2017 MiniAOD files only have AK8 jets using Puppi"+bcolors.ENDC
+				print(bcolors.FAIL+"ERROR::Can't continue because doReclustering is set to False and the 2017 MiniAOD files only have AK8 jets using Puppi"+bcolors.ENDC)
 				doExit = True
 			if doExit:
 				exit(-1)
@@ -356,10 +356,10 @@ elif not options.doJetToolbox and options.doMiniAOD and options.doReclustering:
 			setattr(process,params['algo']+'PFJets'+pu_method,eval(params['algo']+'PFJets'+pu_method))
 			setattr(process,params['algo']+'GenJetsNoNu',eval(params['algo']+'GenJetsNoNu'))
 elif not options.doJetToolbox and options.doMiniAOD and not options.doReclustering:
-	print bcolors.WARNING+"NOTE: These jets will be taken straight from the MiniAOD file."+bcolors.ENDC
+	print(bcolors.WARNING+"NOTE: These jets will be taken straight from the MiniAOD file."+bcolors.ENDC)
 else:
 	if not options.doReclustering:
-		print bcolors.WARNING+"NOTE: The way this method is implemented only works with reclustering on."+bcolors.ENDC
+		print(bcolors.WARNING+"NOTE: The way this method is implemented only works with reclustering on."+bcolors.ENDC)
 		exit(-2)
 
 	process.load('CommonTools.ParticleFlow.pfNoPileUpJME_cff')
@@ -450,9 +450,9 @@ else:
 	
 			getattr(process,'selectedPatJets'+params['algo'].upper()+'PF'+pu_method).cut = cms.string('pt > 10')
 
-			print "For this to work you will need to convert from reco jets to pat jets, which will contain the gen jets. Otherwise the analyzer will have problems. Right now it's not finding some collections"
-			print "You should really use PFBRECO only when your analyzer uses reco::Jets"
-			print "ERROR::Not equipped to handle AODSIM without PAT."
+			print("For this to work you will need to convert from reco jets to pat jets, which will contain the gen jets. Otherwise the analyzer will have problems. Right now it's not finding some collections")
+			print("You should really use PFBRECO only when your analyzer uses reco::Jets")
+			print("ERROR::Not equipped to handle AODSIM without PAT.")
 			exit(0)
 
 #           _   _          _  __     ______________ _____  
@@ -462,8 +462,8 @@ else:
 #  / ____ \| |\  |/ ____ \| |____| |   / /__| |____| | \ \ 
 # /_/    \_\_| \_/_/    \_\______|_|  /_____|______|_|  \_\
 
-print "{A:<{widthA}s} {JC:<{widthJC}s} {JP:<{widthJP}s} {CL:<{widthCL}s}".format(A='Algorithm',JC='Jet Collection',JP='JEC Payload',CL="Correction Levels",widthA=maxA,widthJC=maxJC,widthJP=maxJP,widthCL=maxCL)
-print "{A:<{widthA}s} {JC:<{widthJC}s} {JP:<{widthJP}s} {CL:<{widthCL}s}".format(A='---------',JC='--------------',JP='-----------',CL="-----------------",widthA=maxA,widthJC=maxJC,widthJP=maxJP,widthCL=maxCL)
+print("{A:<{widthA}s} {JC:<{widthJC}s} {JP:<{widthJP}s} {CL:<{widthCL}s}".format(A='Algorithm',JC='Jet Collection',JP='JEC Payload',CL="Correction Levels",widthA=maxA,widthJC=maxJC,widthJP=maxJP,widthCL=maxCL)
+print("{A:<{widthA}s} {JC:<{widthJC}s} {JP:<{widthJP}s} {CL:<{widthCL}s}".format(A='---------',JC='--------------',JP='-----------',CL="-----------------",widthA=maxA,widthJC=maxJC,widthJP=maxJP,widthCL=maxCL)
 for name, params in jetsCollectionsSorted.items():
 	for index, pu_method in enumerate(params['pu_methods']):
 		PUSuffix = ''
@@ -594,7 +594,7 @@ for name, params in jetsCollectionsSorted.items():
 		path.associate(process.myTask)
 		setattr(process, algorithm + 'Path', path)
 
-		print str(bcolors.BFAIL+"{A:<{widthA}s}"+bcolors.BWARNING+" {JC:<{widthJC}s}"+bcolors.OKBLUE+" {JP:<{widthJP}s}"+bcolors.BOKGREEN+" {CL:<{widthCL}s}"+bcolors.ENDC).format(A=algorithm,JC=jetCollection,JP=params['jec_payloads'][index],CL=params['jec_levels'],widthA=maxA,widthJC=maxJC,widthJP=maxJP,widthCL=maxCL)
+		print(str(bcolors.BFAIL+"{A:<{widthA}s}"+bcolors.BWARNING+" {JC:<{widthJC}s}"+bcolors.OKBLUE+" {JP:<{widthJP}s}"+bcolors.BOKGREEN+" {CL:<{widthCL}s}"+bcolors.ENDC).format(A=algorithm,JC=jetCollection,JP=params['jec_payloads'][index],CL=params['jec_levels'],widthA=maxA,widthJC=maxJC,widthJP=maxJP,widthCL=maxCL))
 
 #!
 #! THAT'S ALL! CAN YOU BELIEVE IT? :-D

@@ -64,7 +64,7 @@ fits = {}
 lines = {}
 legends = {}
 for hs in hsettings:
-	print "Doing the",hs,"pad ... "
+	print("Doing the",hs,"pad ... ")
 
 	legname = "leg_"+hs
 	legends[legname] = tdrLeg(0.65,0.50,0.9,0.9)
@@ -82,7 +82,7 @@ for hs in hsettings:
 			# Create the histograms
 			hname = "h"+alg_size+jt+"_"+cor+"_"+hs
 
-			print "\tDoing the histogram",hname,"..."
+			print("\tDoing the histogram",hname,"...")
 
 			histograms[hname] = TH1D(hname,hname,hsettingsTMP[hs][1],hsettingsTMP[hs][2],hsettingsTMP[hs][3])
 
@@ -101,7 +101,7 @@ for hs in hsettings:
 					if event.refpt[jet]==0:
 						continue
 					rsp = pt_updated/event.refpt[jet]
-					#print "JEC Level: "+str(event.jtjec[jet][0].first)+"\tJEC Factor: "+str(event.jtjec[jet][0].second)+"\tOriginal pT: "+str(pt_from_tree)+"\tUncorrected pT: "+str(pt_from_tree/event.jtjec[jet][0].second)+"\tRef pT: "+str(event.refpt[jet])
+					#print("JEC Level: "+str(event.jtjec[jet][0].first)+"\tJEC Factor: "+str(event.jtjec[jet][0].second)+"\tOriginal pT: "+str(pt_from_tree)+"\tUncorrected pT: "+str(pt_from_tree/event.jtjec[jet][0].second)+"\tRef pT: "+str(event.refpt[jet])
 					if rsp<2.0 and rsp>0.0 and abs(event.jteta[jet])<1.3 and event.refdrjt[jet]<float(alg_size[-1:])/20:
 						if hs == "response":
 							histograms[hname].Fill(rsp)

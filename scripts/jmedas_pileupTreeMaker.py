@@ -138,8 +138,8 @@ jetsCollections = {
 jetsCollectionsSorted = collections.OrderedDict(sorted(jetsCollections.items(), key=lambda x:x[0], reverse=False))
 
 process.p = cms.Path()
-print "{:<15} {:<30} {:<30}".format('Algorithm','Jet Collection',"Correction Levels")
-print "{:<15} {:<30} {:<30}".format('---------','--------------',"-----------------")
+print("{:<15} {:<30} {:<30}".format('Algorithm','Jet Collection','Correction Levels'))
+print("{:<15} {:<30} {:<30}".format('--------','-------------','----------------'))
 
 #      _ _____ _____   _____ ___   ___  _     ____   _____  __
 #     | | ____|_   _| |_   _/ _ \ / _ \| |   | __ ) / _ \ \/ /
@@ -237,7 +237,7 @@ for name, params in jetsCollectionsSorted.items():
 		path = process.p.copy()
 		path *= sequence
 		setattr(process, algorithm + 'Path', path)
-		print str(bcolors.BFAIL+"{:<15}"+bcolors.BWARNING+" {:<30}"+bcolors.BOKGREEN+" {:<30}"+bcolors.ENDC).format(algorithm,jetCollection,params['jec_levels'])
+		print(str(bcolors.BFAIL+"{:<15}"+bcolors.BWARNING+" {:<30}"+bcolors.BOKGREEN+" {:<30}"+bcolors.ENDC).format(algorithm,jetCollection,params['jec_levels']))
 
 #!
 #! THAT'S ALL! CAN YOU BELIEVE IT? :-D

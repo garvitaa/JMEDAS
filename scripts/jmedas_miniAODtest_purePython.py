@@ -30,15 +30,15 @@ for iev,event in enumerate(events):
     event.getByLabel(vertexLabel, vertices)
     event.getByLabel(vertexLabel, verticesScore)
 
-    print "\nEvent %d: run %6d, lumi %4d, event %12d" % (iev,event.eventAuxiliary().run(), event.eventAuxiliary().luminosityBlock(),event.eventAuxiliary().event())
+    print("\nEvent %d: run %6d, lumi %4d, event %12d" % (iev,event.eventAuxiliary().run(), event.eventAuxiliary().luminosityBlock(),event.eventAuxiliary().event()))
 
     # Vertices
     if len(vertices.product()) == 0 or vertices.product()[0].ndof() < 4:
-        print "Event has no good primary vertex."
+        print("Event has no good primary vertex.")
         continue
     else:
         PV = vertices.product()[0]
-        print "PV at x,y,z = %+5.3f, %+5.3f, %+6.3f, ndof: %.1f, score: (pt2 of clustered objects) %.1f" % (PV.x(), PV.y(), PV.z(), PV.ndof(),verticesScore.product().get(0))
+        print("PV at x,y,z = %+5.3f, %+5.3f, %+6.3f, ndof: %.1f, score: (pt2 of clustered objects) %.1f" % (PV.x(), PV.y(), PV.z(), PV.ndof(),verticesScore.product().get(0))
 
 
     # Jets (AK4, CHS and Puppi)
@@ -46,27 +46,27 @@ for iev,event in enumerate(events):
         event.getByLabel(jetLabel, jets)
         for i,j in enumerate(jets.product()):
             if j.pt() < 20: continue
-            print "jet %s %3d: pt %5.1f (raw pt %5.1f, matched-calojet pt %5.1f), eta %+4.2f, btag CSVIVFv2 %.3f, CMVAv2 %.3f, pileup mva disc %+.2f" % (
-                algo, i, j.pt(), j.pt()*j.jecFactor('Uncorrected'), j.userFloat("caloJetMap:pt") if algo == "CHS" else -99.0, j.eta(), max(0,j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags")), max(0,j.bDiscriminator("pfCombinedMVAV2BJetTags")), j.userFloat("pileupJetId:fullDiscriminant") if algo == "CHS" else -99)
+            print("jet %s %3d: pt %5.1f (raw pt %5.1f, matched-calojet pt %5.1f), eta %+4.2f, btag CSVIVFv2 %.3f, CMVAv2 %.3f, pileup mva disc %+.2f" % (
+                algo, i, j.pt(), j.pt()*j.jecFactor('Uncorrected'), j.userFloat("caloJetMap:pt") if algo == "CHS" else -99.0, j.eta(), max(0,j.bDiscriminator("pfCombinedInclusiveSecondaryVertexV2BJetTags")), max(0,j.bDiscriminator("pfCombinedMVAV2BJetTags")), j.userFloat("pileupJetId:fullDiscriminant") if algo == "CHS" else -99))
             if 'jetAk4'+algo not in seenIt:
-                constituents = [ j.daughter(i2) for i2 in xrange(j.numberOfDaughters()) ]
+                constituents = [ j.daughter(i2) for i2 in range(j.numberOfDaughters()) ]
                 constituents.sort(key = lambda c:c.pt(), reverse=True)
                 for i2, cand in enumerate(constituents):
                     if i2 > 12:
-                            print "         ....."
+                            print("         .....")
                             break
-                    print "         constituent %3d: pt %6.2f, dz(pv) %+.3f, pdgId %+3d, hcal energy fraction %.2f, puppi weight %.3f " % (i2,cand.pt(),cand.dz(PV.position()),cand.pdgId(),cand.hcalFraction(),cand.puppiWeight())
-                print "   btag discriminators:"
+                    print("         constituent %3d: pt %6.2f, dz(pv) %+.3f, pdgId %+3d, hcal energy fraction %.2f, puppi weight %.3f " % (i2,cand.pt(),cand.dz(PV.position()),cand.pdgId(),cand.hcalFraction(),cand.puppiWeight())
+                print("   btag discriminators:")
                 for btag in j.getPairDiscri():
-                    print  "\t%s %s" % (btag.first, btag.second)
-                print "   userFloats:"
+                    print("\t%s %s" % (btag.first, btag.second))
+                print("   userFloats:")
                 for ufl in j.userFloatNames():
-                    print  "\t%s %s" % (ufl, j.userFloat(ufl))
+                    print("\t%s %s" % (ufl, j.userFloat(ufl)))
                 seenIt['jetAk4'+algo] = True
 
     # Fat AK8 Jets
     for i,j in enumerate(fatjets.product()):
-        print "jetAK8 %3d: pt %5.1f (raw pt %5.1f), eta %+4.2f, mass %5.1f ungroomed, %5.1f softdrop, %5.1f pruned CHS. " % (
+        print("jetAK8 %3d: pt %5.1f (raw pt %5.1f), eta %+4.2f, mass %5.1f ungroomed, %5.1f softdrop, %5.1f pruned CHS. " % (
             i, j.pt(), j.pt()*j.jecFactor('Uncorrected'), j.eta(), j.mass(), j.userFloat('ak8PFJetsPuppiSoftDropMass'), j.userFloat('ak8PFJetsCHSValueMap:ak8PFJetsCHSPrunedMass'))
         # If you use CMSSW_9_4_<=6 to read MiniAOD, to get the constituents of the AK8 jets, you have to loop over all of the
         # daughters recursively. To save space, the first two constituents are actually
@@ -75,39 +75,39 @@ for iev,event in enumerate(events):
         # still in the AK8 jet.
         if 'jetAk8' not in seenIt:
             constituents = []
-            for ida in xrange( j.numberOfDaughters() ) :
+            for ida in range( j.numberOfDaughters() ) :
                 cand = j.daughter(ida)
                 if cand.numberOfDaughters() == 0 :
                     constituents.append( cand )
                 else : # only needed in CMSSW_9_4_<=6
-                    for jda in xrange( cand.numberOfDaughters() ) : # only needed in CMSSW_9_4_<=6
+                    for jda in range( cand.numberOfDaughters() ) : # only needed in CMSSW_9_4_<=6
                         cand2 = cand.daughter(jda) # only needed in CMSSW_9_4_<=6
                         constituents.append( cand2 ) # only needed in CMSSW_9_4_<=6
             constituents.sort(key = lambda c:c.pt(), reverse=True)
             for i2, cand in enumerate(constituents):
                 if i2 >4:
-                            print "         ....."
+                            print("         .....")
                             break
-                print "         constituent %3d: pt %6.2f, pdgId %+3d, #dau %+3d" % (i2,cand.pt(),cand.pdgId(), cand.numberOfDaughters())
-            print "   btag discriminators:"
+                print("         constituent %3d: pt %6.2f, pdgId %+3d, #dau %+3d" % (i2,cand.pt(),cand.pdgId(), cand.numberOfDaughters())
+            print("   btag discriminators:")
             for btag in j.getPairDiscri():
-                print  "\t%s %s" % (btag.first, btag.second)
-            print "   userFloats:"
+                print("\t%s %s" % (btag.first, btag.second))
+            print("   userFloats:")
             for ufl in j.userFloatNames():
-                print  "\t%s %s" % (ufl, j.userFloat(ufl))
+                print("\t%s %s" % (ufl, j.userFloat(ufl)))
             seenIt['jetAk8'] = True
         # Print Subjets
         if 'jetAk8SD' not in seenIt:
             sdSubjets = j.subjets('SoftDropPuppi')
             for isd,sdsub in enumerate( sdSubjets ) :
-                print "   w subjet %3d: pt %5.1f (raw pt %5.1f), eta %+4.2f, mass %5.1f " % (
+                print("   w subjet %3d: pt %5.1f (raw pt %5.1f), eta %+4.2f, mass %5.1f " % (
                     isd, sdsub.pt(), sdsub.pt()*sdsub.jecFactor('Uncorrected'), sdsub.eta(), sdsub.mass()
                     )
-                print "   \tbtag discriminators:"
+                print("   \tbtag discriminators:")
                 for btag in sdsub.getPairDiscri():
-                    print  "\t\t%s %s" % (btag.first, btag.second)
-                print "   \tuserFloats:"
+                    print("\t\t%s %s" % (btag.first, btag.second))
+                print("   \tuserFloats:")
                 for ufl in sdsub.userFloatNames():
-                    print  "\t\t%s %s" % (ufl, sdsub.userFloat(ufl))
+                    print("\t\t%s %s" % (ufl, sdsub.userFloat(ufl)))
                 seenIt['jetAk8SD'] = True
 

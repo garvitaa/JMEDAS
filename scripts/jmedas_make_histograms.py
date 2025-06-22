@@ -130,7 +130,7 @@ pvHandle = Handle("std::vector<reco::Vertex>")
 pvLabel = ("offlineSlimmedPrimaryVertices")
 
 if args.smearJets and args.isData:
-    print 'Misconfiguration. I cannot access generator-level jets on data. Not smearing jets.'
+    print('Misconfiguration. I cannot access generator-level jets on data. Not smearing jets.')
     args.smearJets = False
 
 if args.correctJets: 
@@ -170,7 +170,7 @@ if args.correctJets:
         jecUncAK8 = ROOT.JetCorrectionUncertainty( os.path.expandvars('$CMSSW_BASE/src/Analysis/JMEDAS/data/JECs/{}/{}_Uncertainty_AK8PFchs.txt'.format(args.correctJets, args.correctJets) ))
 
 if args.matchPdgIdAK4:
-    print "Doing AK4 truth matching."
+    print("Doing AK4 truth matching.")
     doMatchingAK4 = True
     matchAK4PdgId = int(args.matchPdgIdAK4[0])
     matchAK4DR = float(args.matchPdgIdAK4[1])
@@ -178,7 +178,7 @@ else:
     doMatchingAK4 = False
 
 if args.matchPdgIdAK8:
-    print "Doing AK8 truth matching."
+    print("Doing AK8 truth matching.")
     doMatchingAK8 = True
     matchAK8PdgId = int(args.matchPdgIdAK8[0])
     matchAK8DR = float(args.matchPdgIdAK8[1])
@@ -331,7 +331,7 @@ def getJER(jetEta, sysType) :
     jerSF = 1.0
 
     if ( (sysType==0 or sysType==-1 or sysType==1) == False):
-        print "ERROR: Can't get JER! use type=0 (nom), -1 (down), +1 (up)"
+        print("ERROR: Can't get JER! use type=0 (nom), -1 (down), +1 (up)")
         return float(jerSF)
 
     # Values from https://twiki.cern.ch/twiki/bin/view/CMS/JetResolution
@@ -378,12 +378,12 @@ for i, ifile in enumerate(filesraw):
     if len( ifile ) > 2 and ifile[:6] == "/store": 
         s = 'root://' + args.xrootd + '/' + ifile.rstrip()
         files.append( s )
-        print 'Added ' + s
+        print('Added ' + s)
     elif len(ifile) > 2 and ifile[:5] == "root:":
         files.append(ifile.rstrip())
-        print 'Added ' + ifile
+        print('Added ' + ifile)
     else:
-        print "Fatal error: cannot open file " + ifile
+        print("Fatal error: cannot open file " + ifile)
         sys.exit()
 
 #if args.maxFiles:
@@ -393,7 +393,7 @@ for i, ifile in enumerate(filesraw):
 for ifile in files :
     if args.maxevents > 0 and nevents > args.maxevents :
         break
-    print 'Processing file ' + ifile
+    print('Processing file ' + ifile)
     events = Events(ifile)
 
     # loop over events in this file
@@ -406,7 +406,7 @@ for ifile in files :
         h_nevents.Fill(0)
 
         if i % 1000 == 0 :
-            print '    ---> Event ' + str(i)
+            print('    ---> Event ' + str(i))
         
         ##    _____   ____  __.  _____        ____.       __    __________.__          __          
         ##   /  _  \ |    |/ _| /  |  |      |    | _____/  |_  \______   \  |   _____/  |_  ______
@@ -443,7 +443,7 @@ for ifile in files :
 
 
         if args.verbose :
-            print '------ AK4 jets ------'
+            print('------ AK4 jets ------')
         # use getByLabel, just like in cmsRun
         event.getByLabel (jetlabel0, jethandle0)
         # get the product
@@ -472,7 +472,7 @@ for ifile in files :
                 uncorrJet = copy.copy( jet.correctedP4(0) ) # For some reason, in python this is interfering with jet.genJet() in strange ways without the copy.copy
 
                 if uncorrJet.E() < 0.00001 :
-                    print 'Very strange. Uncorrected jet E = ' + str( uncorrJet.E()) + ', but Corrected jet E = ' + str( jet.energy() )
+                    print('Very strange. Uncorrected jet E = ' + str( uncorrJet.E()) + ', but Corrected jet E = ' + str( jet.energy() ))
                     continue
                     
                 # Apply loose jet ID to uncorrected jet  https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVRun2016
@@ -570,15 +570,14 @@ for ifile in files :
                     h_mAK4Gen.Fill( genJet.mass() )
                     h_areaAK4Gen.Fill( genJet.jetArea() )
                 if args.verbose == True : 
-                    print ("Jet {0:4.0f}, orig pt = {1:10.2f}, eta = {2:6.2f}, phi = {3:6.2f}, m = {4:6.2f}, " +
+                    jet_info = ("Jet {0:4.0f}, orig pt = {1:10.2f}, eta = {2:6.2f}, phi = {3:6.2f}, m = {4:6.2f}, " +
                            "nda = {5:3.0f}, vtxmass = {6:6.2f}, area = {7:6.2f}, corr = {8:6.3f} +{9:6.3f} -{10:6.3f} ").format(
                         ijet, jet.pt(), jet.eta(), jet.phi(), jet.mass(), jet.numberOfDaughters(), jet.userFloat('vtxMass'),
                         jet.jetArea(), corr, abs(corrUp - corr), abs(corr - corrDn)
-                        ),
+                        )
                     if genJet != None :
-                        print (", gen pt = {0:6.2f}").format( genJet.pt() )
-                    else :
-                        print ''
+                        jet_info += (", gen pt = {0:6.2f}").format( genJet.pt() )
+                    print(jet_info)
             ijet += 1
 
 
@@ -589,14 +588,14 @@ for ifile in files :
         ## \____|__  /____|__ \______  / \________|\___  >__|    |____|   |____/\____/|__| /____  >
         ##         \/        \/      \/                \/                                       \/ 
         if args.verbose :
-            print '------ AK8 jets ------'
+            print('------ AK8 jets ------')
         # use getByLabel, just like in cmsRun
         event.getByLabel (jetlabel1, jethandle1)
         # get the product
         jets1 = jethandle1.product()
         # loop over jets and fill hists
         if args.verbose :
-          print jets1.size()
+          print(jets1.size())
 
         ijet = 0
         for jet in jets1 :
@@ -710,7 +709,7 @@ for ifile in files :
                     L2cor = L12cor/L1cor
                     L3cor = L123cor/L12cor
                     L23cor = L2cor*L3cor
-                    #print 'L1cor '+str(L1cor)+' L2cor '+str(L2cor)+' L3cor '+str(L3cor)+' L23cor '+str(L23cor)+' L123cor '+str(L123cor)
+                    #print('L1cor '+str(L1cor)+' L2cor '+str(L2cor)+' L3cor '+str(L3cor)+' L23cor '+str(L23cor)+' L123cor '+str(L123cor)
 
                 subjets = jet.subjets("SoftDropPuppi")
                 groomedJet = None
@@ -834,18 +833,18 @@ for ifile in files :
                     h_areaAK8Gen.Fill( genJet.jetArea() )                    
                 if args.verbose == True :
                     if hasTopTagInfo : 
-                        print 'Jet {0:4.0f}, pt = {1:10.2f}, eta = {2:6.2f}, phi = {3:6.2f}, m = {4:6.2f}, nda = {5:3.0f}, softdrop m = {6:6.2f}, pruned m = {7:6.2f}, topmass = {10:6.2f}, minmass = {11:6.2f}'.format(
+                        print('Jet {0:4.0f}, pt = {1:10.2f}, eta = {2:6.2f}, phi = {3:6.2f}, m = {4:6.2f}, nda = {5:3.0f}, softdrop m = {6:6.2f}, pruned m = {7:6.2f}, topmass = {10:6.2f}, minmass = {11:6.2f}'.format()
                             ijet, jet.pt(), jet.eta(), jet.phi(), jet.mass(), jet.numberOfDaughters(),
                             jet.userFloat('ak8PFJetsCHSValueMap:ak8PFJetsCHSSoftDropMass'),
                             jet.userFloat('ak8PFJetsCHSValueMap:ak8PFJetsCHSPrunedMass'),
                             jet.tagInfo('caTop').properties().topMass, jet.tagInfo('caTop').properties().minMass
-                            )
+                            ))
                     else :
-                       print 'Jet {0:4.0f}, pt = {1:10.2f}, eta = {2:6.2f}, phi = {3:6.2f}, m = {4:6.2f}, nda = {5:3.0f}, softdrop m = {6:6.2f}, pruned m = {7:6.2f}'.format(
+                       print('Jet {0:4.0f}, pt = {1:10.2f}, eta = {2:6.2f}, phi = {3:6.2f}, m = {4:6.2f}, nda = {5:3.0f}, softdrop m = {6:6.2f}, pruned m = {7:6.2f}'.format()
                             ijet, jet.pt(), jet.eta(), jet.phi(), jet.mass(), jet.numberOfDaughters(),
                             jet.userFloat('ak8PFJetsCHSValueMap:ak8PFJetsCHSSoftDropMass'),
                             jet.userFloat('ak8PFJetsCHSValueMap:ak8PFJetsCHSPrunedMass'),
-                            )
+                            ))
             ijet += 1
 
         
@@ -861,4 +860,4 @@ f.Write()
 f.Close()
 
 ts_end = time.time()
-print "Total time: {} s".format(ts_end - ts_start)
+print("Total time: {} s".format(ts_end - ts_start))

@@ -319,7 +319,7 @@ def CMS_lumi(pad, iPeriod=3, iPosX=10) :
   elif ( iPeriod==14 ) :
       lumiText += "(13 TeV)"
    
-  print lumiText
+  print(lumiText)
 
   latex = TLatex();
   latex.SetNDC()

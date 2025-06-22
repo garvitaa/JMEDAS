@@ -40,12 +40,12 @@ fits = {}
 lines = {}
 for ifilename_suffix in ifilenames:
     ifilename = "JECNtuple_MiniAOD"+ifilename_suffix+".root"
-    print "Processing the file "+ifilename+" ... "
+    print("Processing the file "+ifilename+" ... ")
 
     f = TFile(ifilename,"READ")
 
     if not f.GetDirectory(options.jetcollection):
-        print "ERROR::Cannot find the jet collection "+options.jetcollection+" in the input file "+ifilename
+        print("ERROR::Cannot find the jet collection "+options.jetcollection+" in the input file "+ifilename)
         exit(-1)
 
     tree = f.Get(options.jetcollection+"/t")
@@ -53,7 +53,7 @@ for ifilename_suffix in ifilenames:
     # Create the histograms
     hname = "h"+options.jetcollection+ifilename_suffix
 
-    print "\tDoing the histogram",hname,"..."
+    print("\tDoing the histogram",hname,"...")
 
     histograms[hname] = TH1D(hname,hname,80,0.6,1.6)
     histograms[hname].SetDirectory(None)
