@@ -13,6 +13,8 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/ESHandle.h"
+#include "FWCore/Utilities/interface/ESGetToken.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
 #include "FWCore/Utilities/interface/EDGetToken.h"
@@ -49,6 +51,8 @@
 //#include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
+#include "CondFormats/JetMETObjects/interface/JetResolutionObject.h"
+#include "CondFormats/DataRecord/interface/JetResolutionScaleFactorRcd.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 
 //#include "SimDataFormats/JetMatching/interface/JetMatchedPartons.h"
@@ -120,6 +124,9 @@ private:
   edm::EDGetTokenT< edm::ValueMap<double> >     srcPuppuMuIso_WithoutLep_CH_;
   edm::EDGetTokenT< edm::ValueMap<double> >     srcPuppuMuIso_WithoutLep_NH_;
   edm::EDGetTokenT< edm::ValueMap<double> >     srcPuppuMuIso_WithoutLep_PH_;
+  
+  // ESGetToken for JetResolutionScaleFactor
+  edm::ESGetToken<JME::JetResolutionObject, JetResolutionScaleFactorRcd> jerSFToken_;
 
   string        JERUncertainty_;
   bool          JERLegacy_;
@@ -168,6 +175,7 @@ pileupTreeMaker::pileupTreeMaker(const edm::ParameterSet& iConfig)
   , deltaRMax_(0.0)
   , deltaPhiMin_(3.141)
   , deltaRPartonMax_(0.0)
+  , jerSFToken_(esConsumes<JME::JetResolutionObject, JetResolutionScaleFactorRcd>(edm::es::Label(iConfig.getParameter<std::string>("jetType"))))
 {
 
    if(iConfig.exists("srcMuons")) {
@@ -350,7 +358,9 @@ void pileupTreeMaker::analyze(const edm::Event& iEvent,
             resolution_sf = JME::JetResolutionScaleFactor(JERUncertaintyFile_);
           }
           else {
-            resolution_sf = JME::JetResolutionScaleFactor::get(iSetup, jetType_);
+            // Use the ESGetToken to get the JetResolutionScaleFactor from EventSetup
+            auto const& jerSFObj = iSetup.getData(jerSFToken_);
+            resolution_sf = JME::JetResolutionScaleFactor(jerSFObj);
           }
           JME::JetParameters parameters = {{JME::Binning::JetEta, jet.eta()}, {JME::Binning::Rho, PUNtuple_->rho}};
           JERCor = JERUncertainty_ == "up" ? resolution_sf.getScaleFactor(parameters, Variation::UP) :
