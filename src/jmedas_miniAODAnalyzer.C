@@ -4,7 +4,9 @@
 
 // user include files
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
+#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
 
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
@@ -20,10 +22,15 @@
 //
 using namespace std;
 
-class MiniAnalyzer : public edm::EDAnalyzer {
+class MiniAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources> {
    public:
       explicit MiniAnalyzer (const edm::ParameterSet&);
       ~MiniAnalyzer();
+      
+      using ModuleType = MiniAnalyzer;
+      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+      static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
+      static const std::string& baseType();
 
    private:
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
@@ -40,6 +47,7 @@ MiniAnalyzer::MiniAnalyzer(const edm::ParameterSet& iConfig):
     jetToken_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("jets"))),
     fatjetToken_(consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("fatjets")))
 {
+    usesResource("TFileService");
 }
 
 MiniAnalyzer::~MiniAnalyzer()
@@ -109,6 +117,19 @@ MiniAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
    }
     }
+}
+
+void MiniAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+  edm::ParameterSetDescription desc;
+  desc.add<edm::InputTag>("vertices");
+  desc.add<edm::InputTag>("jets");
+  desc.add<edm::InputTag>("fatjets");
+  descriptions.addDefault(desc);
+}
+
+const std::string& MiniAnalyzer::baseType() {
+  static const std::string baseType_ = "EDAnalyzer";
+  return baseType_;
 }
 
 
