@@ -81,10 +81,7 @@ public:
   explicit treeMaker(const edm::ParameterSet& iConfig);
   virtual ~treeMaker();
   
-  using ModuleType = treeMaker;
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-  static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
-  static const std::string& baseType();
 
 private:
   // member functions
@@ -442,12 +439,6 @@ void treeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   desc.add<unsigned int>("nJetMax");
   desc.addOptional<double>("deltaRMax");
   descriptions.addDefault(desc);
-}
-
-//______________________________________________________________________________
-const std::string& treeMaker::baseType() {
-  static const std::string baseType_ = "EDAnalyzer";
-  return baseType_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

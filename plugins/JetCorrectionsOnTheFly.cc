@@ -44,6 +44,10 @@ JetCorrectionsOnTheFly::JetCorrectionsOnTheFly(edm::ParameterSet const& cfg) :
   jecUnc_ = std::make_shared<JetCorrectionUncertainty>(jecUncName_);
 
 }
+
+JetCorrectionsOnTheFly::~JetCorrectionsOnTheFly()
+{
+}
 ////////////////////////////////////////////////////////////////////////////////////////
 void JetCorrectionsOnTheFly::beginJob() 
 {
@@ -128,11 +132,6 @@ void JetCorrectionsOnTheFly::fillDescriptions(edm::ConfigurationDescriptions& de
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
-const std::string& JetCorrectionsOnTheFly::baseType() {
-  static const std::string baseType_ = "EDAnalyzer";
-  return baseType_;
-}
-
 /////////// Register Modules ////////
 #include "FWCore/Framework/interface/MakerMacros.h"
 DEFINE_FWK_MODULE(JetCorrectionsOnTheFly);

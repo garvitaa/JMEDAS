@@ -47,6 +47,10 @@ JetPlotsExample::JetPlotsExample(edm::ParameterSet const& cfg) :
   
 
 }
+
+JetPlotsExample::~JetPlotsExample()
+{
+}
 ////////////////////////////////////////////////////////////////////////////////////////
 void JetPlotsExample::beginJob() 
 {
@@ -119,12 +123,6 @@ void JetPlotsExample::fillDescriptions(edm::ConfigurationDescriptions& descripti
   desc.add<double>("jetPtMin");
   desc.add<bool>("plotSubstructure");
   descriptions.addDefault(desc);
-}
-
-////////////////////////////////////////////////////////////////////////////////////////
-const std::string& JetPlotsExample::baseType() {
-  static const std::string baseType_ = "EDAnalyzer";
-  return baseType_;
 }
 
 /////////// Register Modules ////////

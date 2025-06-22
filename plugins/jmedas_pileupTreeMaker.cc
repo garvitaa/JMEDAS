@@ -88,10 +88,7 @@ public:
   explicit pileupTreeMaker(const edm::ParameterSet& iConfig);
   virtual ~pileupTreeMaker();
   
-  using ModuleType = pileupTreeMaker;
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-  static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
-  static const std::string& baseType();
 
 private:
   // member functions
@@ -637,12 +634,6 @@ void pileupTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descripti
   desc.addOptional<std::string>("JESUncertaintyType");
   desc.addOptional<std::string>("JESUncertaintyFile");
   descriptions.addDefault(desc);
-}
-
-//______________________________________________________________________________
-const std::string& pileupTreeMaker::baseType() {
-  static const std::string baseType_ = "EDAnalyzer";
-  return baseType_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

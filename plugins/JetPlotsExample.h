@@ -25,11 +25,9 @@ class JetPlotsExample : public edm::one::EDAnalyzer<edm::one::SharedResources>
    {
      public:
        explicit JetPlotsExample(edm::ParameterSet const& cfg);
+       ~JetPlotsExample();
        
-       using ModuleType = JetPlotsExample;
        static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-       static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
-       static const std::string& baseType();
        
      private:
        void beginJob() override;

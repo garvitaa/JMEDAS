@@ -48,10 +48,7 @@ public:
   explicit convertPackedCandToRecoCand(const edm::ParameterSet& iConfig);
   ~convertPackedCandToRecoCand() {;}
   
-  using ModuleType = convertPackedCandToRecoCand;
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-  static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
-  static const std::string& baseType();
   
   // member functions
   void produce(edm::Event& iEvent,const edm::EventSetup& iSetup) override;
@@ -128,12 +125,6 @@ void convertPackedCandToRecoCand::fillDescriptions(edm::ConfigurationDescription
   edm::ParameterSetDescription desc;
   desc.add<edm::InputTag>("src");
   descriptions.addDefault(desc);
-}
-
-//______________________________________________________________________________
-const std::string& convertPackedCandToRecoCand::baseType() {
-  static const std::string baseType_ = "EDProducer";
-  return baseType_;
 }
 
 
