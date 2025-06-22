@@ -22,7 +22,7 @@ keypoints:
 > ## After following the instructions in the setup, make sure you have the CMS environment:
 >
 > ~~~
-> cd $CMSSW_BASE/src/METDAS
+> cd $CMSSW_BASE/src/Analysis
 > cmsenv
 > ~~~
 > {: .language-bash}
@@ -74,8 +74,8 @@ $$\vec{p}_{T}^{~miss,~Type-1} = - \sum_{i}^{nJets} \vec{p}_{T, jet}^{~corr} - \s
 
 
 <figure>
-  <img src="../fig/episode6/CMS-JME-17-001_Figure_009.pdf" alt="" style="width:20%">
-  <img src="../fig/episode6/CMS-JME-17-001_Figure_013.pdf" alt="" style="width:20%">
+  <img src="../fig/episode6/CMS-JME-17-001_Figure_009.pdf" alt="" style="width:40%">
+  <img src="../fig/episode6/CMS-JME-17-001_Figure_013.pdf" alt="" style="width:40%">
   <center><figcaption>We will revisit this in MET performance, but this figure shows a comarison between the MET scale for raw PF MET vs Type-1 PF MET.</figcaption></center>
 </figure>
 
@@ -104,10 +104,10 @@ The possible causes of this modulation include:
 The amplitude of the modulation increases roughly linearly with the number of pile-up interactions.
 
 For example, following plot shows the MET $\phi$ distribution without the XY correction in events with an electron and a muon where $t\bar{t}$+jets background dominates:
-<img src="fig/emu-inclusive-metphi-uncorr.pdf" alt="" style="width:20%">
+<img src="../fig/episode6/emu-inclusive-metphi-uncorr.pdf" alt="" style="width:40%">
 
 After applying the correction the data/MC agreement improves:
-<img src="fig/emu-inclusive-metphi-corr.pdf" alt="" style="width:20%">
+<img src="../fig/episode6/emu-inclusive-metphi-corr.pdf" alt="" style="width:40%">
 
 ## MET Uncertainty
 
@@ -122,8 +122,8 @@ The physics objects that contribute the most are:
 
 The scale and resolution of each component must be systematically varied within their respective uncertainties. These variations are then propagated to the MET calculation to calculate their impact on the analysis.
 
-Following figure shows the distribution of the Type 1 corrected MET reconstructed by the PF algorithm in MC and in data along with the uncertainties in the ratop plot.
-<img src="fig/PFMET_Type1XY-2.pdf" alt="" style="width:20%">
+Following figure shows the distribution of the Type 1 corrected MET reconstructed by the PF algorithm in MC and in data along with the uncertainties in the ratio plot.
+<img src="../fig/episode6/PFMET_Type1XY-2.pdf" alt="" style="width:40%">
 
 ## Exercise 2.1
 
@@ -142,13 +142,13 @@ In this exercise, we will consider three sources of uncertainty:
 2. **Jet energy resolution**  
 3. **Unclustered energy**
 
-We will use the same file as in [Exercise 1.1](https://garvitaa.github.io/METDAS/01-MET101/index.html#exercise-11).
+We will use the same file as in the previous exercise [Exercise 1.1](https://cms-jet.github.io/JMEDAS/05-MET101/index.html#exercise-1).
 
 Execute the following commands inside the CMSSW environment created during setup:
 
 ~~~
-cd $CMSSW_BASE/src/METDAS
-cmsRun CMSDAS_MET_Analysis/test/run_CMSDAS_MET_Exercise2_cfg.py
+cd $CMSSW_BASE/src/Analysis/MET
+cmsRun test/run_CMSDAS_MET_Exercise2_cfg.py
 ~~~
 {: .language-bash}
 
@@ -192,7 +192,7 @@ Now we make the following modifications to the configuration script `CMSDAS_MET_
 
 After these modifications, please re-run the configuration with the following command:
 ~~~
-cmsRun CMSDAS_MET_Analysis/test/run_CMSDAS_MET_Exercise2_cfg.py
+cmsRun test/run_CMSDAS_MET_Exercise2_cfg.py
 ~~~
 {: .language-bash}
 
@@ -200,7 +200,7 @@ Once the process completes (it will take a few seconds), it will produce a ROOT 
 To generate the plot, run the following commands:
 
 ~~~
-cd $CMSSW_BASE/src/METDAS/scripts
+cd $CMSSW_BASE/src/Analysis/MET/scripts
 root -l -q 'cmsdasmetplotsexercise2.C("step2a")'
 ~~~
 {: .language-bash}
@@ -218,7 +218,7 @@ Next, we will focus on Type-1 PF MET and study the impact of various uncertainti
 To generate the corresponding plot, use the following command:
 
 ~~~
-cd $CMSSW_BASE/src/METDAS/scripts
+cd $CMSSW_BASE/src/Analysis/MET/scripts
 root -l -q 'cmsdasmetplotsexercise2.C("step2b")'
 ~~~
 {: .language-bash}

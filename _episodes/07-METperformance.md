@@ -15,7 +15,7 @@ keypoints:
 > ## After following the instructions in the setup, make sure you have the CMS environment:
 >
 > ~~~
-> cd $CMSSW_BASE/src/METDAS
+> cd $CMSSW_BASE/src/Analysis
 > cmsenv
 > ~~~
 > {: .language-bash}
@@ -31,7 +31,7 @@ To achieve this, the response and resolution of MET are studied in samples where
 The MET performance is then assessed by comparing the momentum of the vector boson to that of the hadronic recoil system.
 The hadronic recoil system is defined as the vector sum of the transverse momenta of all PF candidates, excluding the vector boson (or its decay products in the case of Z boson decay).
 
-<img src="../fig/episode3/parameterized_hadronicRecoil.png" alt="" style="width:80%">
+<img src="../fig/episode7/parameterized_hadronicRecoil.png" alt="" style="width:80%">
 
 Momentum conservation in the transverse plane imposes
 
@@ -47,7 +47,7 @@ Specifically, the mean of the distribution of the magnitude of $$q_{T} + u_{\par
 
 An example of the $$q_{T} + u_{\parallel}$$ and $u_{\perp}$ distributions is shown in the following plots.
 
-<img src="../fig/episode3/upar_uperp_dist.png" alt="" style="width:70%">
+<img src="../fig/episode7/CMS-JME-17-001_Figure_008-a.pdf" alt="" style="width:70%">
 
 Use the distribution of the parallel and perpendicular components of the hadronic recoil to measure the MET scale and resolution
 - Get the mean of the parallel component to estimate MET scale.
@@ -59,7 +59,7 @@ In this exercise, we will measure the scale of the "uncorrected" (raw) PF MET as
 
 To start, run the following commands:
 ~~~
-cd $CMSSW_BASE/src/METDAS/scripts
+cd $CMSSW_BASE/src/Analysis/MET/scripts
 root -l -q 'cmsdasmetplotsexercise3.C("step3_scale_pfraw")'
 ~~~
 {: .language-bash}
@@ -69,13 +69,13 @@ root -l -q 'cmsdasmetplotsexercise3.C("step3_scale_pfraw")'
 {: .challenge}
 
 > ## Solution 3.1 (a)
-> <img src="../fig/episode3/Figure_3p1a.png" alt="" style="width:35%">
+> <img src="../fig/episode7/Figure_3p1a.png" alt="" style="width:35%">
 > For a fully calibrated MET object, the scale is expected to be approximately 1, indicating an accurate representation of the true missing transverse energy with minimal systematic bias.
 {: .solution}
 
 Next, measure the MET scale using the Type-1 calibrated MET. Run the following commands:
 ~~~
-cd $CMSSW_BASE/src/METDAS/scripts
+cd $CMSSW_BASE/src/Analysis/MET/scripts
 root -l -q 'cmsdasmetplotsexercise3.C("step3_scale_pftype1")'
 ~~~
 {: .language-bash}
@@ -85,7 +85,7 @@ root -l -q 'cmsdasmetplotsexercise3.C("step3_scale_pftype1")'
 {: .challenge}
 
 > ## Solution 3.1 (b)
-> <img src="../fig/episode3/Figure_3p1b.png" alt="" style="width:35%">
+> <img src="../fig/episode7/Figure_3p1b.png" alt="" style="width:35%">
 {: .solution}
 
 ---
@@ -94,7 +94,7 @@ root -l -q 'cmsdasmetplotsexercise3.C("step3_scale_pftype1")'
 
 Now, let’s analyze the resolution of MET as a function of pT(Z) and the number of pileup vertices. To do this, run:
 ~~~
-cd $CMSSW_BASE/src/METDAS/scripts
+cd $CMSSW_BASE/src/Analysis/MET/scripts
 root -l -q 'cmsdasmetplotsexercise3.C("step3_resolution_pftype1")'
 ~~~
 {: .language-bash}
@@ -110,16 +110,16 @@ This command will generate distributions showing the resolution of the parallel 
 >
 >  <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 5px;">
 >  <figure style="margin: 0; text-align: center; width: 45%;">
->    <img src="../fig/episode3/Figure_3p2a.png" alt="W boson candidate event" style="width: 100%;">
+>    <img src="../fig/episode7/Figure_3p2a.png" alt="W boson candidate event" style="width: 100%;">
 >  </figure>
 >  <figure style="margin: 0; text-align: center; width: 45%;">
->    <img src="../fig/episode3/Figure_3p2b.png" alt="Dark matter search event" style="width: 100%;">
+>    <img src="../fig/episode7/Figure_3p2b.png" alt="Dark matter search event" style="width: 100%;">
 >  </figure>
 >  <figure style="margin: 0; text-align: center; width: 45%;">
->    <img src="../fig/episode3/Figure_3p2c.png" alt="Z boson candidate event" style="width: 100%;">
+>    <img src="../fig/episode7/Figure_3p2c.png" alt="Z boson candidate event" style="width: 100%;">
 >  </figure>
 >  <figure style="margin: 0; text-align: center; width: 45%;">
->    <img src="../fig/episode3/Figure_3p2d.png" alt="Exotic particle search event" style="width: 100%;">
+>    <img src="../fig/episode7/Figure_3p2d.png" alt="Exotic particle search event" style="width: 100%;">
 >  </figure>
 >  </div>
 {: .solution}
@@ -131,7 +131,7 @@ Equipped with the ability to evaluate MET performance through scale and resoluti
 
 To generate the corresponding plots, use the following command:
 ~~~
-cd $CMSSW_BASE/src/METDAS/scripts
+cd $CMSSW_BASE/src/Analysis/MET/scripts
 root -l -q 'cmsdasmetplotsexercise4.C'
 ~~~
 {: .language-bash}
@@ -143,7 +143,7 @@ This might take a few minutes to process.
 {: .challenge}
 
 > ## Solution 3.3 (a)
-> <img src="../fig/episode3/Figure_3p3a.png" alt="" style="width:35%">
+> <img src="../fig/episode7/Figure_3p3a.png" alt="" style="width:35%">
 {: .solution}
 
 > ## Question 3.3 (b)
@@ -156,16 +156,16 @@ This might take a few minutes to process.
 >
 >  <div style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 5px;">
 >  <figure style="margin: 0; text-align: center; width: 45%;">
->    <img src="../fig/episode3/Figure_3p3b1.png" alt="W boson candidate event" style="width: 100%;">
+>    <img src="../fig/episode7/Figure_3p3b1.png" alt="W boson candidate event" style="width: 100%;">
 >  </figure>
 >  <figure style="margin: 0; text-align: center; width: 45%;">
->    <img src="../fig/episode3/Figure_3p3b2.png" alt="Dark matter search event" style="width: 100%;">
+>    <img src="../fig/episode7/Figure_3p3b2.png" alt="Dark matter search event" style="width: 100%;">
 >  </figure>
 >  <figure style="margin: 0; text-align: center; width: 45%;">
->    <img src="../fig/episode3/Figure_3p3b3.png" alt="Z boson candidate event" style="width: 100%;">
+>    <img src="../fig/episode7/Figure_3p3b3.png" alt="Z boson candidate event" style="width: 100%;">
 >  </figure>
 >  <figure style="margin: 0; text-align: center; width: 45%;">
->    <img src="../fig/episode3/Figure_3p3b4.png" alt="Exotic particle search event" style="width: 100%;">
+>    <img src="../fig/episode7/Figure_3p3b4.png" alt="Exotic particle search event" style="width: 100%;">
 >  </figure>
 >  </div>
 {: .solution}
