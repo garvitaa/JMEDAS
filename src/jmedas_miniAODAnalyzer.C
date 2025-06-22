@@ -27,10 +27,7 @@ class MiniAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResources> {
       explicit MiniAnalyzer (const edm::ParameterSet&);
       ~MiniAnalyzer();
       
-      using ModuleType = MiniAnalyzer;
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-      static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
-      static const std::string& baseType();
 
    private:
       virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
@@ -126,12 +123,6 @@ void MiniAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions
   desc.add<edm::InputTag>("fatjets");
   descriptions.addDefault(desc);
 }
-
-const std::string& MiniAnalyzer::baseType() {
-  static const std::string baseType_ = "EDAnalyzer";
-  return baseType_;
-}
-
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(MiniAnalyzer);

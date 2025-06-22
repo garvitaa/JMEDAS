@@ -33,11 +33,9 @@
 class JetUncertaintyProducer : public edm::one::EDProducer<> {
 	public:
 		explicit JetUncertaintyProducer(const edm::ParameterSet&);
+		~JetUncertaintyProducer();
 		
-		using ModuleType = JetUncertaintyProducer;
 		static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-		static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
-		static const std::string& baseType();
 		
 	private:
 		void produce(edm::Event&, const edm::EventSetup&) override;
@@ -64,6 +62,10 @@ JetUncertaintyProducer::JetUncertaintyProducer(const edm::ParameterSet& iConfig)
 	else{
 		produces<std::vector<pat::Jet>>();
 	}
+}
+
+JetUncertaintyProducer::~JetUncertaintyProducer()
+{
 }
 
 void JetUncertaintyProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
@@ -144,11 +146,6 @@ void JetUncertaintyProducer::fillDescriptions(edm::ConfigurationDescriptions& de
 	desc.add<std::string>("JetType");
 	desc.add<int>("jecUncDir");
 	descriptions.addDefault(desc);
-}
-
-const std::string& JetUncertaintyProducer::baseType() {
-	static const std::string baseType_ = "EDProducer";
-	return baseType_;
 }
 
 DEFINE_FWK_MODULE(JetUncertaintyProducer);
