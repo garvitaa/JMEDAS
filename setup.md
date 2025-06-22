@@ -29,10 +29,9 @@ Continue with [Cloning the repository](#cloning-the-repository).
 In your browser, open the [SWAN website](https://swan.cern.ch/) and
 log in with your CERN credentials.
 
-When presented with the "Configure Environment" page, keep everything
-unchanged, i.e. the
-"Software stack" as _107_ (default in June 2025),
-"Platform" _AlmaLinux 9 (gcc13)_
+When presented with the "Configure Environment" page, make sure to **change** the
+"Software stack" to _105a_ (from the 107 default in June 2025),
+keep "Platform" _AlmaLinux 9 (gcc13)_
 and click "Start my session".
 
 Click on the "Open a terminal" button in the top right corner.
@@ -73,7 +72,7 @@ They load the environment and the packages needed for the exercises
 and open a jupyter notebook:
 
 ~~~
-source /cvmfs/sft.cern.ch/lcg/views/LCG_107/x86_64-el9-gcc13-opt/setup.sh
+source /cvmfs/sft.cern.ch/lcg/views/LCG_105/x86_64-el9-gcc13-opt/setup.sh
 jupyter notebook --no-browser --port=8888 --ip 127.0.0.1
 ~~~
 {: .language-bash}
