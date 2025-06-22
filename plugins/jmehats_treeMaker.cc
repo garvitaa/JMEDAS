@@ -9,9 +9,13 @@
 #include "Analysis/JMEDAS/interface/jmehats_ntuple.h"
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
+#include "FWCore/Utilities/interface/EDGetToken.h"
  
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
@@ -40,13 +44,13 @@
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 
-#include "JetMETCorrections/Objects/interface/JetCorrector.h"
+//#include "JetMETCorrections/Objects/interface/JetCorrector.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
 
-#include "SimDataFormats/JetMatching/interface/JetMatchedPartons.h"
+//#include "SimDataFormats/JetMatching/interface/JetMatchedPartons.h"
 #include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
@@ -70,18 +74,23 @@ using namespace std;
 // class definition
 ////////////////////////////////////////////////////////////////////////////////
 
-class treeMaker : public edm::EDAnalyzer
+class treeMaker : public edm::one::EDAnalyzer<edm::one::SharedResources>
 {
 public:
   // construction/destruction
   explicit treeMaker(const edm::ParameterSet& iConfig);
   virtual ~treeMaker();
+  
+  using ModuleType = treeMaker;
+  static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+  static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
+  static const std::string& baseType();
 
 private:
   // member functions
-  void beginJob();
-  void analyze(const edm::Event& iEvent,const edm::EventSetup& iSetup);
-  void endJob(){;}
+  void beginJob() override;
+  void analyze(const edm::Event& iEvent,const edm::EventSetup& iSetup) override;
+  void endJob() override {;}
   double getJERfactor(double pt, double eta, double ptgen);
 
 private:
@@ -90,9 +99,9 @@ private:
   std::string   JetCorLabel_;
   std::vector<std::string> JetCorLevels_;
 
-  edm::InputTag srcJet_;
-  edm::InputTag srcRho_;
-  edm::InputTag srcVtx_;
+  edm::EDGetTokenT<edm::View<pat::Jet>> srcJetToken_;
+  edm::EDGetTokenT<double> srcRhoToken_;
+  edm::EDGetTokenT<reco::VertexCollection> srcVtxToken_;
 
   bool          doComposition_;
   bool          doFlavor_;
@@ -129,9 +138,9 @@ treeMaker::treeMaker(const edm::ParameterSet& iConfig)
   : moduleLabel_       (iConfig.getParameter<std::string>            ("@module_label"))
   , JetCorLabel_       (iConfig.getParameter<std::string>              ("JetCorLabel"))
   , JetCorLevels_      (iConfig.getParameter<vector<string> >         ("JetCorLevels"))
-  , srcJet_            (iConfig.getParameter<edm::InputTag>                 ("srcJet"))
-  , srcRho_            (iConfig.getParameter<edm::InputTag>                 ("srcRho"))
-  , srcVtx_            (iConfig.getParameter<edm::InputTag>                 ("srcVtx"))
+  , srcJetToken_       (consumes<edm::View<pat::Jet>>(iConfig.getParameter<edm::InputTag>("srcJet")))
+  , srcRhoToken_       (consumes<double>(iConfig.getParameter<edm::InputTag>("srcRho")))
+  , srcVtxToken_       (consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("srcVtx")))
   , doComposition_     (iConfig.getParameter<bool>                   ("doComposition"))
   , doFlavor_          (iConfig.getParameter<bool>                        ("doFlavor"))
   , doJER_             (iConfig.getParameter<bool>                           ("doJER"))
@@ -159,6 +168,8 @@ treeMaker::treeMaker(const edm::ParameterSet& iConfig)
       jecUnc =  new JetCorrectionUncertainty(*(new JetCorrectorParameters(JESUncertaintyFile_, JESUncertaintyType_)));
     }
   }
+  
+  usesResource("TFileService");
 }
 
 
@@ -194,19 +205,19 @@ void treeMaker::analyze(const edm::Event& iEvent,
   nref_=0;
   edm::Handle<GenEventInfoProduct>               genInfo;
   edm::Handle<vector<PileupSummaryInfo> >        puInfos;  
-  edm::Handle<std::vector<pat::Jet> >            jets;
+  edm::Handle<edm::View<pat::Jet>>               jets;
   edm::Handle<double>                            rho;
   edm::Handle<std::vector<reco::Vertex> >        vtx;
 
   //RHO INFORMATION
   PUNtuple_->rho = 0.0;
-  if (iEvent.getByLabel(srcRho_,rho)) {
+  if (iEvent.getByToken(srcRhoToken_,rho)) {
     PUNtuple_->rho = *rho;
   }
  
   //NPV INFORMATION
   PUNtuple_->npv = 0;
-  if (iEvent.getByLabel(srcVtx_,vtx)) {
+  if (iEvent.getByToken(srcVtxToken_,vtx)) {
      const reco::VertexCollection::const_iterator vtxEnd = vtx->end();
      for (reco::VertexCollection::const_iterator vtxIter = vtx->begin(); vtxEnd != vtxIter; ++vtxIter) {
         if (!vtxIter->isFake() && vtxIter->ndof()>=4 && fabs(vtxIter->z())<=24)
@@ -232,7 +243,7 @@ void treeMaker::analyze(const edm::Event& iEvent,
   }
 
   // REFERENCES & RECOJETS
-  iEvent.getByLabel(srcJet_, jets);
+  iEvent.getByToken(srcJetToken_, jets);
   
   //loop over the jets and fill the ntuple
   size_t nJet=(nJetMax_==0) ? jets->size() : std::min(nJetMax_,(unsigned int)jets->size());
@@ -408,10 +419,35 @@ double treeMaker::getJERfactor(double pt, double eta, double ptgen){
     cout << "ERROR::treeMaker::getJERfactor Unrecognized JERUncertainty_ value." << endl;
     return 1.0;
   }
-  double corr = ptgen / pt;
+  double corr = ptgen / pt;   return  max(0.0,corr + jer * (1 - corr));
 
-  return  max(0.0,corr + jer * (1 - corr));
+}
 
+//______________________________________________________________________________
+void treeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+  edm::ParameterSetDescription desc;
+  desc.add<std::string>("JetCorLabel");
+  desc.add<std::vector<std::string>>("JetCorLevels");
+  desc.add<edm::InputTag>("srcJet");
+  desc.add<edm::InputTag>("srcRho");
+  desc.add<edm::InputTag>("srcVtx");
+  desc.add<bool>("doComposition");
+  desc.add<bool>("doFlavor");
+  desc.add<bool>("doJER");
+  desc.add<std::string>("JERUncertainty");
+  desc.add<bool>("doJESUncertainty");
+  desc.add<std::string>("JESUncertainty");
+  desc.add<std::string>("JESUncertaintyType");
+  desc.add<std::string>("JESUncertaintyFile");
+  desc.add<unsigned int>("nJetMax");
+  desc.addOptional<double>("deltaRMax");
+  descriptions.addDefault(desc);
+}
+
+//______________________________________________________________________________
+const std::string& treeMaker::baseType() {
+  static const std::string baseType_ = "EDAnalyzer";
+  return baseType_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
