@@ -14,10 +14,14 @@
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/Framework/interface/ESHandle.h"
-#include "FWCore/Framework/interface/EDProducer.h"
+#include "FWCore/Framework/interface/one/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
+#include "FWCore/Utilities/interface/ESGetToken.h"
+#include "FWCore/Utilities/interface/ESInputTag.h"
 // new includes
 #include "CommonTools/Utils/interface/PtComparator.h"
 #include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
@@ -26,23 +30,33 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/Common/interface/ValueMap.h"
 
-class JetUncertaintyProducer : public edm::EDProducer {
+class JetUncertaintyProducer : public edm::one::EDProducer<> {
 	public:
 		explicit JetUncertaintyProducer(const edm::ParameterSet&);
+		
+		using ModuleType = JetUncertaintyProducer;
+		static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+		static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
+		static const std::string& baseType();
+		
 	private:
-		virtual void produce(edm::Event&, const edm::EventSetup&);
+		void produce(edm::Event&, const edm::EventSetup&) override;
 		GreaterByPt<pat::Jet> pTComparator_;
 		edm::InputTag JetTag_;
 		edm::EDGetTokenT<edm::View<pat::Jet>> JetTok_;
 		std::string JetType_;
 		int jecUncDir_;
+		
+		// ESGetToken for JetCorrector parameters
+		edm::ESGetToken<JetCorrectorParametersCollection, JetCorrectionsRecord> jetCorParToken_;
 };
 
 JetUncertaintyProducer::JetUncertaintyProducer(const edm::ParameterSet& iConfig) :
 	JetTag_(iConfig.getParameter<edm::InputTag>("JetTag")),
 	JetTok_(consumes<edm::View<pat::Jet>>(JetTag_)),
 	JetType_(iConfig.getParameter<std::string>("JetType")),
-	jecUncDir_(iConfig.getParameter<int>("jecUncDir"))
+	jecUncDir_(iConfig.getParameter<int>("jecUncDir")),
+	jetCorParToken_(esConsumes<JetCorrectorParametersCollection, JetCorrectionsRecord>(edm::ESInputTag("", JetType_)))
 {
 	if(jecUncDir_==0){
 		produces<edm::ValueMap<float>>("");
@@ -55,9 +69,8 @@ JetUncertaintyProducer::JetUncertaintyProducer(const edm::ParameterSet& iConfig)
 void JetUncertaintyProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
 	//get the JEC uncertainties
-	edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
-	iSetup.get<JetCorrectionsRecord>().get(JetType_,JetCorParColl); 
-	JetCorrectorParameters const & JetCorPar = (*JetCorParColl)["Uncertainty"];
+	auto const& JetCorParColl = iSetup.getData(jetCorParToken_);
+	JetCorrectorParameters const & JetCorPar = JetCorParColl["Uncertainty"];
 	auto jecUnc = std::make_unique<JetCorrectionUncertainty>(JetCorPar);
 
 	//get the input jet collection (nominal JECs already applied)
@@ -123,6 +136,19 @@ void JetUncertaintyProducer::produce(edm::Event& iEvent, const edm::EventSetup& 
 	
 		iEvent.put(std::move(newJets));
 	}
+}
+
+void JetUncertaintyProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+	edm::ParameterSetDescription desc;
+	desc.add<edm::InputTag>("JetTag");
+	desc.add<std::string>("JetType");
+	desc.add<int>("jecUncDir");
+	descriptions.addDefault(desc);
+}
+
+const std::string& JetUncertaintyProducer::baseType() {
+	static const std::string baseType_ = "EDProducer";
+	return baseType_;
 }
 
 DEFINE_FWK_MODULE(JetUncertaintyProducer);
