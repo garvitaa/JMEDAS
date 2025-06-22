@@ -20,7 +20,7 @@
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "CondFormats/JetMETObjects/interface/FactorizedJetCorrector.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 class JetCorrectionsOnTheFly : public edm::one::EDAnalyzer<edm::one::SharedResources>
    {
@@ -49,7 +49,7 @@ class JetCorrectionsOnTheFly : public edm::one::EDAnalyzer<edm::one::SharedResou
 	TH1F *corrPtDown;
        
 
-       boost::shared_ptr<JetCorrectionUncertainty> jecUnc_;
-       boost::shared_ptr<FactorizedJetCorrector> jec_;
+       std::shared_ptr<JetCorrectionUncertainty> jecUnc_;
+       std::shared_ptr<FactorizedJetCorrector> jec_;
    };
 #endif

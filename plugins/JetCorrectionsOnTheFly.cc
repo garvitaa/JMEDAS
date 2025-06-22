@@ -40,8 +40,8 @@ JetCorrectionsOnTheFly::JetCorrectionsOnTheFly(edm::ParameterSet const& cfg) :
   }
   
   // Make the FactorizedJetCorrector and Uncertainty
-  jec_ = boost::shared_ptr<FactorizedJetCorrector> ( new FactorizedJetCorrector(vPar) );
-  jecUnc_ = boost::shared_ptr<JetCorrectionUncertainty>( new JetCorrectionUncertainty(jecUncName_) );
+  jec_ = std::make_shared<FactorizedJetCorrector>(vPar);
+  jecUnc_ = std::make_shared<JetCorrectionUncertainty>(jecUncName_);
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////

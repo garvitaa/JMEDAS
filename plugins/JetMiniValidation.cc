@@ -80,7 +80,7 @@ class JetMiniValidation : public edm::one::EDAnalyzer<edm::one::SharedResources>
       edm::EDGetTokenT<std::vector<reco::Vertex> > vtxToken_;
 
       std::vector<std::string>  jecPayloads_; /// files for JEC payloads
-      boost::shared_ptr<FactorizedJetCorrector> jec_;
+      std::shared_ptr<FactorizedJetCorrector> jec_;
 
 
       TH1D * h_ak4chs_pt             ;  
@@ -307,7 +307,7 @@ JetMiniValidation::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
      JetCorrectorParameters pars(*ipayload);
      vPar.push_back(pars);
   }
-  jec_ = boost::shared_ptr<FactorizedJetCorrector> ( new FactorizedJetCorrector(vPar) );
+  jec_ = std::make_shared<FactorizedJetCorrector>(vPar);
 
 
   // Vertices
