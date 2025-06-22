@@ -173,10 +173,10 @@ pileupTreeMaker::pileupTreeMaker(const edm::ParameterSet& iConfig)
   , doFlavor_                                            (iConfig.getParameter<bool>              ("doFlavor"))
   , nJetMax_                                             (iConfig.getParameter<unsigned int>      ("nJetMax"))
   , ptMin_                                               (iConfig.getParameter<double>            ("ptMinFilter"))
-  , jerSFToken_(esConsumes<JME::JetResolutionObject, JetResolutionScaleFactorRcd>(edm::ESInputTag("", iConfig.getParameter<std::string>("jetType"))))
   , deltaRMax_(0.0)
   , deltaPhiMin_(3.141)
   , deltaRPartonMax_(0.0)
+  , jerSFToken_(esConsumes<JME::JetResolutionObject, JetResolutionScaleFactorRcd>(edm::ESInputTag("", iConfig.getParameter<std::string>("jetType"))))
 {
 
    if(iConfig.exists("srcMuons")) {
