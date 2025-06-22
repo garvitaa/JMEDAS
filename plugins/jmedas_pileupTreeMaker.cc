@@ -142,10 +142,11 @@ private:
   double        ptMin_;
   double        deltaRMax_;
   double        deltaPhiMin_;
-  // ESGetToken for JetResolutionScaleFactor
-  edm::ESGetToken<JME::JetResolutionObject, JetResolutionScaleFactorRcd> jerSFToken_;
   double        deltaRPartonMax_;
   int           nref_;
+  
+  // ESGetToken for JetResolutionScaleFactor
+  edm::ESGetToken<JME::JetResolutionObject, JetResolutionScaleFactorRcd> jerSFToken_;
 
   JetCorrectionUncertainty* jecUnc;
   JME::JetResolutionScaleFactor resolution_sf;
