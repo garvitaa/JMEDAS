@@ -9,10 +9,13 @@
 #include "Analysis/JMEDAS/interface/jmedas_pileupNtuple.h"
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
+#include "FWCore/Utilities/interface/EDGetToken.h"
  
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
@@ -41,9 +44,9 @@
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 
-#include "JetMETCorrections/Objects/interface/JetCorrector.h"
+//#include "JetMETCorrections/Objects/interface/JetCorrector.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
-#include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
+//#include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
 #include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
 #include "JetMETCorrections/Modules/interface/JetResolution.h"
 #include "PhysicsTools/Utilities/interface/LumiReWeighting.h"
@@ -73,18 +76,23 @@ using namespace std;
 // class definition
 ////////////////////////////////////////////////////////////////////////////////
 
-class pileupTreeMaker : public edm::EDAnalyzer
+class pileupTreeMaker : public edm::one::EDAnalyzer<edm::one::SharedResources>
 {
 public:
   // construction/destruction
   explicit pileupTreeMaker(const edm::ParameterSet& iConfig);
   virtual ~pileupTreeMaker();
+  
+  using ModuleType = pileupTreeMaker;
+  static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+  static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
+  static const std::string& baseType();
 
 private:
   // member functions
-  void beginJob();
-  void analyze(const edm::Event& iEvent,const edm::EventSetup& iSetup);
-  void endJob(){;}
+  void beginJob() override;
+  void analyze(const edm::Event& iEvent,const edm::EventSetup& iSetup) override;
+  void endJob() override {;}
   double getJERfactor(double pt, double eta, double ptgen);
 
 private:
@@ -208,6 +216,8 @@ pileupTreeMaker::pileupTreeMaker(const edm::ParameterSet& iConfig)
         jecUnc =  new JetCorrectionUncertainty(*(new JetCorrectorParameters(JESUncertaintyFile_, JESUncertaintyType_)));
      }
   }
+  
+  usesResource("TFileService");
 }
 
 
@@ -589,6 +599,39 @@ double pileupTreeMaker::getJERfactor(double pt, double eta, double ptgen){
 
    return  max(0.0,corr + jer * (1 - corr));
 
+}
+
+//______________________________________________________________________________
+void pileupTreeMaker::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+  edm::ParameterSetDescription desc;
+  desc.add<std::string>("jetType");
+  desc.add<edm::InputTag>("srcJet");
+  desc.add<edm::InputTag>("srcRho");
+  desc.add<edm::InputTag>("srcVtx");
+  desc.add<edm::InputTag>("srcPileupInfo");
+  desc.add<bool>("doComposition");
+  desc.add<bool>("doFlavor");
+  desc.add<unsigned int>("nJetMax");
+  desc.add<double>("ptMinFilter");
+  desc.addOptional<edm::InputTag>("srcMuons");
+  desc.addOptional<edm::InputTag>("srcMET");
+  desc.addOptional<edm::InputTag>("srcMETNoHF");
+  desc.addOptional<edm::InputTag>("srcPuppiMET");
+  desc.addOptional<double>("deltaRMax");
+  desc.addOptional<double>("deltaPhiMin");
+  desc.addOptional<std::string>("JERUncertainty");
+  desc.addOptional<bool>("JERLegacy");
+  desc.addOptional<std::string>("JERUncertaintyFile");
+  desc.addOptional<std::string>("JESUncertainty");
+  desc.addOptional<std::string>("JESUncertaintyType");
+  desc.addOptional<std::string>("JESUncertaintyFile");
+  descriptions.addDefault(desc);
+}
+
+//______________________________________________________________________________
+const std::string& pileupTreeMaker::baseType() {
+  static const std::string baseType_ = "EDAnalyzer";
+  return baseType_;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
