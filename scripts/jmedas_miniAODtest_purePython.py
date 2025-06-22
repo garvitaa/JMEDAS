@@ -21,7 +21,7 @@ verticesScore = Handle("edm::ValueMap<float>")
 seenIt = {} # list of things we've seen (so that we dump them in full only once)
 
 # open file (you can use 'edmFileUtil -d /store/whatever.root' to get the physical file name)
-events = Events('root://cms-xrd-global.cern.ch//store/mc/RunIIAutumn18MiniAOD/QCD_HT1000to1500_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/102X_upgrade2018_realistic_v15-v1/210000/DA20DC21-E781-C540-9FCD-7BCF2144CA4E.root' )
+events = Events('root://cms-xrd-global.cern.ch//store/mc/RunIISummer20UL18MiniAODv2/QCD_HT1000to1500_TuneCP5_13TeV-madgraphMLM-pythia8/MINIAODSIM/106X_upgrade2018_realistic_v16_L1v1-v2/2430000/06232CB0-5397-074F-ABE9-2C2414756085.root' )
 
 for iev,event in enumerate(events):
     if iev >= 10: break
@@ -38,7 +38,7 @@ for iev,event in enumerate(events):
         continue
     else:
         PV = vertices.product()[0]
-        print("PV at x,y,z = %+5.3f, %+5.3f, %+6.3f, ndof: %.1f, score: (pt2 of clustered objects) %.1f" % (PV.x(), PV.y(), PV.z(), PV.ndof(),verticesScore.product().get(0))
+        print("PV at x,y,z = %+5.3f, %+5.3f, %+6.3f, ndof: %.1f, score: (pt2 of clustered objects) %.1f" % (PV.x(), PV.y(), PV.z(), PV.ndof(),verticesScore.product().get(0)))
 
 
     # Jets (AK4, CHS and Puppi)
@@ -55,7 +55,7 @@ for iev,event in enumerate(events):
                     if i2 > 12:
                             print("         .....")
                             break
-                    print("         constituent %3d: pt %6.2f, dz(pv) %+.3f, pdgId %+3d, hcal energy fraction %.2f, puppi weight %.3f " % (i2,cand.pt(),cand.dz(PV.position()),cand.pdgId(),cand.hcalFraction(),cand.puppiWeight())
+                    print("         constituent %3d: pt %6.2f, dz(pv) %+.3f, pdgId %+3d, hcal energy fraction %.2f, puppi weight %.3f " % (i2,cand.pt(),cand.dz(PV.position()),cand.pdgId(),cand.hcalFraction(),cand.puppiWeight()))
                 print("   btag discriminators:")
                 for btag in j.getPairDiscri():
                     print("\t%s %s" % (btag.first, btag.second))
@@ -67,7 +67,7 @@ for iev,event in enumerate(events):
     # Fat AK8 Jets
     for i,j in enumerate(fatjets.product()):
         print("jetAK8 %3d: pt %5.1f (raw pt %5.1f), eta %+4.2f, mass %5.1f ungroomed, %5.1f softdrop, %5.1f pruned CHS. " % (
-            i, j.pt(), j.pt()*j.jecFactor('Uncorrected'), j.eta(), j.mass(), j.userFloat('ak8PFJetsPuppiSoftDropMass'), j.userFloat('ak8PFJetsCHSValueMap:ak8PFJetsCHSPrunedMass'))
+            i, j.pt(), j.pt()*j.jecFactor('Uncorrected'), j.eta(), j.mass(), j.userFloat('ak8PFJetsPuppiSoftDropMass'), j.userFloat('ak8PFJetsCHSValueMap:ak8PFJetsCHSPrunedMass')))
         # If you use CMSSW_9_4_<=6 to read MiniAOD, to get the constituents of the AK8 jets, you have to loop over all of the
         # daughters recursively. To save space, the first two constituents are actually
         # the Soft Drop SUBJETS, which will then point to their daughters.
@@ -88,7 +88,7 @@ for iev,event in enumerate(events):
                 if i2 >4:
                             print("         .....")
                             break
-                print("         constituent %3d: pt %6.2f, pdgId %+3d, #dau %+3d" % (i2,cand.pt(),cand.pdgId(), cand.numberOfDaughters())
+                print("         constituent %3d: pt %6.2f, pdgId %+3d, #dau %+3d" % (i2,cand.pt(),cand.pdgId(), cand.numberOfDaughters()))
             print("   btag discriminators:")
             for btag in j.getPairDiscri():
                 print("\t%s %s" % (btag.first, btag.second))
@@ -102,7 +102,7 @@ for iev,event in enumerate(events):
             for isd,sdsub in enumerate( sdSubjets ) :
                 print("   w subjet %3d: pt %5.1f (raw pt %5.1f), eta %+4.2f, mass %5.1f " % (
                     isd, sdsub.pt(), sdsub.pt()*sdsub.jecFactor('Uncorrected'), sdsub.eta(), sdsub.mass()
-                    )
+                    ))
                 print("   \tbtag discriminators:")
                 for btag in sdsub.getPairDiscri():
                     print("\t\t%s %s" % (btag.first, btag.second))
