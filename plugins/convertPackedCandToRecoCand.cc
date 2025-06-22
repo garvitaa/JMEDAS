@@ -8,16 +8,20 @@
 
 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
-#include "FWCore/Framework/interface/EDProducer.h"
+#include "FWCore/Framework/interface/one/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
+#include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
+#include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
+#include "FWCore/Utilities/interface/EDGetToken.h"
  
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include "FWCore/ServiceRegistry/interface/Service.h"
  
 #include "DataFormats/Common/interface/Handle.h"
+#include "DataFormats/Common/interface/View.h"
 #include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/Candidate/interface/CandidateFwd.h"
 #include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
@@ -37,20 +41,25 @@ using namespace reco;
 ////////////////////////////////////////////////////////////////////////////////
 
 //______________________________________________________________________________
-class convertPackedCandToRecoCand : public edm::EDProducer
+class convertPackedCandToRecoCand : public edm::one::EDProducer<>
 {
 public:
   // construction/destruction
-  convertPackedCandToRecoCand(const edm::ParameterSet& iConfig);
+  explicit convertPackedCandToRecoCand(const edm::ParameterSet& iConfig);
   ~convertPackedCandToRecoCand() {;}
   
+  using ModuleType = convertPackedCandToRecoCand;
+  static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+  static void prevalidate(edm::ConfigurationDescriptions& descriptions) {}
+  static const std::string& baseType();
+  
   // member functions
-  void produce(edm::Event& iEvent,const edm::EventSetup& iSetup);
-  void endJob();
+  void produce(edm::Event& iEvent,const edm::EventSetup& iSetup) override;
+  void endJob() override;
 
 private:
   // member data
-  edm::InputTag src_;
+  edm::EDGetTokenT<edm::View<pat::PackedCandidate>> srcToken_;
 
   std::string  moduleName_;
 
@@ -65,7 +74,7 @@ private:
 
 //______________________________________________________________________________
 convertPackedCandToRecoCand::convertPackedCandToRecoCand(const edm::ParameterSet& iConfig)
-  : src_(iConfig.getParameter<InputTag>("src"))
+  : srcToken_(consumes<edm::View<pat::PackedCandidate>>(iConfig.getParameter<InputTag>("src")))
   , moduleName_(iConfig.getParameter<string>("@module_label"))
 {
   //produces<reco::PFCandidateCollection>("convertedPackedPFCandidates");
@@ -81,10 +90,10 @@ convertPackedCandToRecoCand::convertPackedCandToRecoCand(const edm::ParameterSet
 void convertPackedCandToRecoCand::produce(edm::Event& iEvent,const edm::EventSetup& iSetup)
 {
 
-  edm::Handle<vector<pat::PackedCandidate> > packedCands_;
+  edm::Handle<edm::View<pat::PackedCandidate>> packedCands_;
   //edm::Handle<View<Candidate> > packedCands_;
   
-  iEvent.getByLabel(src_,packedCands_);
+  iEvent.getByToken(srcToken_, packedCands_);
   
   size_t nCands = (size_t)packedCands_->size();
   
@@ -112,6 +121,19 @@ void convertPackedCandToRecoCand::produce(edm::Event& iEvent,const edm::EventSet
 //______________________________________________________________________________
 void convertPackedCandToRecoCand::endJob()
 {
+}
+
+//______________________________________________________________________________
+void convertPackedCandToRecoCand::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+  edm::ParameterSetDescription desc;
+  desc.add<edm::InputTag>("src");
+  descriptions.addDefault(desc);
+}
+
+//______________________________________________________________________________
+const std::string& convertPackedCandToRecoCand::baseType() {
+  static const std::string baseType_ = "EDProducer";
+  return baseType_;
 }
 
 
