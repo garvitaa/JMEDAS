@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    CMSDAS_MET/CMSDAS_MET_AnalysisExercise5
-// Class:      CMSDAS_MET_AnalysisExercise5
+// Package:    CMSDAS_MET/CMSDAS_MET_AnalysisExercise4
+// Class:      CMSDAS_MET_AnalysisExercise4
 //
-/**\class CMSDAS_MET_AnalysisExercise5 CMSDAS_MET_AnalysisExercise5.cc CMSDAS_MET/CMSDAS_MET_Analysis/plugins/CMSDAS_MET_AnalysisExercise5.cc
+/**\class CMSDAS_MET_AnalysisExercise4 CMSDAS_MET_AnalysisExercise4.cc CMSDAS_MET/CMSDAS_MET_Analysis/plugins/CMSDAS_MET_AnalysisExercise4.cc
 
  Description: [one line class summary]
 
@@ -58,10 +58,10 @@
 // This will improve performance in multithreaded jobs.
 
 
-class CMSDAS_MET_AnalysisExercise5 : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
+class CMSDAS_MET_AnalysisExercise4 : public edm::one::EDAnalyzer<edm::one::SharedResources>  {
    public:
-      explicit CMSDAS_MET_AnalysisExercise5(const edm::ParameterSet&);
-      ~CMSDAS_MET_AnalysisExercise5();
+      explicit CMSDAS_MET_AnalysisExercise4(const edm::ParameterSet&);
+      ~CMSDAS_MET_AnalysisExercise4();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -96,7 +96,7 @@ class CMSDAS_MET_AnalysisExercise5 : public edm::one::EDAnalyzer<edm::one::Share
 //
 // constructors and destructor
 //
-CMSDAS_MET_AnalysisExercise5::CMSDAS_MET_AnalysisExercise5(const edm::ParameterSet& iConfig)
+CMSDAS_MET_AnalysisExercise4::CMSDAS_MET_AnalysisExercise4(const edm::ParameterSet& iConfig)
  :
 
   doprints_(iConfig.getParameter<bool>("doprints")),
@@ -113,7 +113,7 @@ CMSDAS_MET_AnalysisExercise5::CMSDAS_MET_AnalysisExercise5(const edm::ParameterS
 }
 
 
-CMSDAS_MET_AnalysisExercise5::~CMSDAS_MET_AnalysisExercise5()
+CMSDAS_MET_AnalysisExercise4::~CMSDAS_MET_AnalysisExercise4()
 {
 
    // do anything here that needs to be done at desctruction time
@@ -128,7 +128,7 @@ CMSDAS_MET_AnalysisExercise5::~CMSDAS_MET_AnalysisExercise5()
 
 // ------------ method called for each event  ------------
 void
-CMSDAS_MET_AnalysisExercise5::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+CMSDAS_MET_AnalysisExercise4::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
 
@@ -163,20 +163,20 @@ CMSDAS_MET_AnalysisExercise5::analyze(const edm::Event& iEvent, const edm::Event
 
 // ------------ method called once each job just before starting event loop  ------------
 void
-CMSDAS_MET_AnalysisExercise5::beginJob()
+CMSDAS_MET_AnalysisExercise4::beginJob()
 {
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
 void
-CMSDAS_MET_AnalysisExercise5::endJob()
+CMSDAS_MET_AnalysisExercise4::endJob()
 {
 
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-CMSDAS_MET_AnalysisExercise5::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+CMSDAS_MET_AnalysisExercise4::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -186,4 +186,4 @@ CMSDAS_MET_AnalysisExercise5::fillDescriptions(edm::ConfigurationDescriptions& d
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(CMSDAS_MET_AnalysisExercise5);
+DEFINE_FWK_MODULE(CMSDAS_MET_AnalysisExercise4);
