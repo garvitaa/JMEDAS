@@ -74,9 +74,8 @@ $$\vec{p}_{T}^{~miss,~Type-1} = - \sum_{i}^{nJets} \vec{p}_{T, jet}^{~corr} - \s
 
 
 <figure>
-  <img src="../fig/episode6/CMS-JME-17-001_Figure_009.pdf" alt="" style="width:40%">
-  <img src="../fig/episode6/CMS-JME-17-001_Figure_013.pdf" alt="" style="width:40%">
-  <center><figcaption>We will revisit this in MET performance, but this figure shows a comarison between the MET scale for raw PF MET vs Type-1 PF MET.</figcaption></center>
+  <img src="../fig/episode6/Response-2.pdf" alt="" style="width:40%">
+  <center><figcaption>We will revisit this in MET performance, but this figure shows a comparison between the MET scale for raw and Type-1 corrected MET.</figcaption></center>
 </figure>
 
 ### Type-1 Smear MET (For MC only)
@@ -147,7 +146,7 @@ We will use the same file as in the previous exercise [Exercise 1.1](https://cms
 Execute the following commands inside the CMSSW environment created during setup:
 
 ~~~
-cd $CMSSW_BASE/src/Analysis/MET
+cd $CMSSW_BASE/src/Analysis/JMEDAS
 cmsRun test/run_CMSDAS_MET_Exercise2_cfg.py
 ~~~
 {: .language-bash}
@@ -158,7 +157,7 @@ This script will:
 - Print the values of various sources of systematic uncertainties  
 Additionally, the script demonstrates how to access MET with different levels of corrections applied. By default, Type-1 MET is selected.
 
-The analyzer being run using is command is `CMSDAS_MET_Analysis/plugins/CMSDAS_MET_AnalysisExercise2.cc`. The printout looks like the following:
+The analyzer being run using is command is `JMEDAS/plugins/CMSDAS_MET_AnalysisExercise2.cc`. The printout looks like the following:
 ```
 Begin processing the 1st record. Run 1, Event 138728702, LumiSection 513811 on stream 0 at 05-Jan-2025 14:40:03.942 CST
  MET : 
@@ -185,7 +184,7 @@ Begin processing the 1st record. Run 1, Event 138728702, LumiSection 513811 on s
 {: .solution}
 
 ## Exercise 2.2
-Now we make the following modifications to the configuration script `CMSDAS_MET_Analysis/test/run_CMSDAS_MET_Exercise2_cfg.py`:
+Now we make the following modifications to the configuration script `JMEDAS/test/run_CMSDAS_MET_Exercise2_cfg.py`:
 - Prevent printouts by setting `doprints` to `False`.
 - Reduce the frequency of the report from "every" event to "every 10000" events by `modifying process.MessageLogger.cerr.FwkReport.reportEvery`.
 - Run over all events in the file by updating `process.maxEvent`s from 10 to -1.
@@ -200,7 +199,7 @@ Once the process completes (it will take a few seconds), it will produce a ROOT 
 To generate the plot, run the following commands:
 
 ~~~
-cd $CMSSW_BASE/src/Analysis/MET/scripts
+cd $CMSSW_BASE/src/Analysis/JMEDAS/scripts
 root -l -q 'cmsdasmetplotsexercise2.C("step2a")'
 ~~~
 {: .language-bash}
@@ -218,7 +217,7 @@ Next, we will focus on Type-1 PF MET and study the impact of various uncertainti
 To generate the corresponding plot, use the following command:
 
 ~~~
-cd $CMSSW_BASE/src/Analysis/MET/scripts
+cd $CMSSW_BASE/src/Analysis/JMEDAS/scripts
 root -l -q 'cmsdasmetplotsexercise2.C("step2b")'
 ~~~
 {: .language-bash}

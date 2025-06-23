@@ -33,6 +33,11 @@ These anomalous MET events can arise from:
 
 In such events, the MET value may be much higher than expected and does not reflect true missing energy from invisible particles (like neutrinos or dark matter candidates).
 
+<figure>
+  <img src="../fig/episode8/met_scanning_fig.pdf" alt="" style="width:70%">
+  <center><figcaption> An example of identifying the source of anomalous MET.</figcaption></center>
+</figure>
+
 ## Noisy event filters
 
 To identify false MET, several algorithms have been developed that analyze factors such as timing, pulse shape, and signal topology.
@@ -41,7 +46,7 @@ These cleaning algorithms, or filters, run in separate processing paths, and the
 Analyzers can use this decision bit to filter out noisy events. These filters are specifically designed to reject events with unusually large MET values caused by spurious signals.
 
 <figure>
-  <img src="../fig/episode8/CMS-JME-17-001_Figure_004.pdf" alt="" style="width:80%">
+  <img src="../fig/episode8/CMS-JME-17-001_Figure_004.pdf" alt="" style="width:70%">
   <center><figcaption> MET $p_T$ and leading jet $\phi$ distributions, with and without the application of event filters.</figcaption></center>
 </figure>
 
@@ -52,12 +57,12 @@ Noisy event filters (previously called MET Filters) are stored as trigger result
 
 In this exercise, we will show how to access the MET Filters in miniAOD. Please run the following commands:
 ~~~
-cd $CMSSW_BASE/src/Analysis
-cmsRun MET/test/run_CMSDAS_MET_Exercise4_cfg.py
+cd $CMSSW_BASE/src/Analysis/JMEDAS
+cmsRun test/run_CMSDAS_MET_Exercise4_cfg.py
 ~~~
 {: .language-bash}
 
-This example accesses the decision bits for the following MET Filters: `Beam Halo`, `HBHE`, `HBHE (Iso)`, `Ecal Trigger Primitives`, `EE SuperCluster`, `Bad Charged Hadron`, and `Bad PF Muon`. A "true" decision means the event was not rejected by the filter. The analyzer used in this example is `Analysis/MET/plugins/CMSDAS_MET_AnalysisExercise5.cc`. The printed result will look like this:
+This example accesses the decision bits for the following MET Filters: `Beam Halo`, `HBHE`, `HBHE (Iso)`, `Ecal Trigger Primitives`, `EE SuperCluster`, `Bad Charged Hadron`, and `Bad PF Muon`. A "true" decision means the event was not rejected by the filter. The analyzer used in this example is `JMEDAS/plugins/CMSDAS_MET_AnalysisExercise5.cc`. The printed result will look like this:
 
 ```
 Begin processing the 1st record. Run 317626, Event 178458435, LumiSection 134 on stream 0 at 28-Jun-2020 10:39:20.656 CDT
@@ -74,7 +79,7 @@ MET Filters decision:
 ```
 
 > ## Question 4
-> To see the output for a bad event, modify the input file in `Analysis/MET/test/run_CMSDAS_MET_Exercise4_cfg.py`.
+> To see the output for a bad event, modify the input file in `JMEDAS/test/run_CMSDAS_MET_Exercise4_cfg.py`.
 > Comment out the line for the first input file `cmsdas_met_METFilters1.root` and uncomment the line for the second input file `cmsdas_met_METFilters2.root`.
 > Then run the code again. What changes do you notice?
 {: .challenge}

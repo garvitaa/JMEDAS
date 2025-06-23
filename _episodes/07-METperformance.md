@@ -59,7 +59,7 @@ In this exercise, we will measure the scale of the "uncorrected" (raw) PF MET as
 
 To start, run the following commands:
 ~~~
-cd $CMSSW_BASE/src/Analysis/MET/scripts
+cd $CMSSW_BASE/src/Analysis/JMEDAS/scripts
 root -l -q 'cmsdasmetplotsexercise3.C("step3_scale_pfraw")'
 ~~~
 {: .language-bash}
@@ -75,7 +75,7 @@ root -l -q 'cmsdasmetplotsexercise3.C("step3_scale_pfraw")'
 
 Next, measure the MET scale using the Type-1 calibrated MET. Run the following commands:
 ~~~
-cd $CMSSW_BASE/src/Analysis/MET/scripts
+cd $CMSSW_BASE/src/Analysis/JMEDAS/scripts
 root -l -q 'cmsdasmetplotsexercise3.C("step3_scale_pftype1")'
 ~~~
 {: .language-bash}
@@ -94,7 +94,7 @@ root -l -q 'cmsdasmetplotsexercise3.C("step3_scale_pftype1")'
 
 Now, let’s analyze the resolution of MET as a function of pT(Z) and the number of pileup vertices. To do this, run:
 ~~~
-cd $CMSSW_BASE/src/Analysis/MET/scripts
+cd $CMSSW_BASE/src/Analysis/JMEDAS/scripts
 root -l -q 'cmsdasmetplotsexercise3.C("step3_resolution_pftype1")'
 ~~~
 {: .language-bash}
@@ -131,7 +131,7 @@ Equipped with the ability to evaluate MET performance through scale and resoluti
 
 To generate the corresponding plots, use the following command:
 ~~~
-cd $CMSSW_BASE/src/Analysis/MET/scripts
+cd $CMSSW_BASE/src/Analysis/JMEDAS/scripts
 root -l -q 'cmsdasmetplotsexercise4.C'
 ~~~
 {: .language-bash}
