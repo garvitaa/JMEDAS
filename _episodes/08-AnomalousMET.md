@@ -52,12 +52,12 @@ Noisy event filters (previously called MET Filters) are stored as trigger result
 
 In this exercise, we will show how to access the MET Filters in miniAOD. Please run the following commands:
 ~~~
-cd $CMSSW_BASE/src/Analysis
-cmsRun MET/test/run_CMSDAS_MET_Exercise4_cfg.py
+cd $CMSSW_BASE/src/Analysis/JMEDAS
+cmsRun test/run_CMSDAS_MET_Exercise4_cfg.py
 ~~~
 {: .language-bash}
 
-This example accesses the decision bits for the following MET Filters: `Beam Halo`, `HBHE`, `HBHE (Iso)`, `Ecal Trigger Primitives`, `EE SuperCluster`, `Bad Charged Hadron`, and `Bad PF Muon`. A "true" decision means the event was not rejected by the filter. The analyzer used in this example is `Analysis/MET/plugins/CMSDAS_MET_AnalysisExercise5.cc`. The printed result will look like this:
+This example accesses the decision bits for the following MET Filters: `Beam Halo`, `HBHE`, `HBHE (Iso)`, `Ecal Trigger Primitives`, `EE SuperCluster`, `Bad Charged Hadron`, and `Bad PF Muon`. A "true" decision means the event was not rejected by the filter. The analyzer used in this example is `JMEDAS/plugins/CMSDAS_MET_AnalysisExercise5.cc`. The printed result will look like this:
 
 ```
 Begin processing the 1st record. Run 317626, Event 178458435, LumiSection 134 on stream 0 at 28-Jun-2020 10:39:20.656 CDT
@@ -74,7 +74,7 @@ MET Filters decision:
 ```
 
 > ## Question 4
-> To see the output for a bad event, modify the input file in `Analysis/MET/test/run_CMSDAS_MET_Exercise4_cfg.py`.
+> To see the output for a bad event, modify the input file in `JMEDAS/test/run_CMSDAS_MET_Exercise4_cfg.py`.
 > Comment out the line for the first input file `cmsdas_met_METFilters1.root` and uncomment the line for the second input file `cmsdas_met_METFilters2.root`.
 > Then run the code again. What changes do you notice?
 {: .challenge}
