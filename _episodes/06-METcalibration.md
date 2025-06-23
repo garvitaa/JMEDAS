@@ -75,7 +75,7 @@ $$\vec{p}_{T}^{~miss,~Type-1} = - \sum_{i}^{nJets} \vec{p}_{T, jet}^{~corr} - \s
 
 <figure>
   <img src="../fig/episode6/Response-2.pdf" alt="" style="width:40%">
-  <center><figcaption>We will revisit this in MET performance, but these figures show a comparison between the MET scale for raw and Type-1 corrected MET.</figcaption></center>
+  <center><figcaption>We will revisit this in MET performance, but this figure shows a comparison between the MET scale for raw and Type-1 corrected MET.</figcaption></center>
 </figure>
 
 ### Type-1 Smear MET (For MC only)
