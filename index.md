@@ -48,7 +48,7 @@ _Follow the CMS workbook on jet analysis:_ [WorkBookJetAnalysis](https://twiki.c
 
 ### Facilitators CMSDAS IIT Hyderabad 2025
 
-<img src="fig/photo_facilitators.pdf" alt="" style="width:80%">
+<img src="fig/photo_facilitators.png" alt="Photo of the facilitators" style="width:80%">
 
 ### Support
 
