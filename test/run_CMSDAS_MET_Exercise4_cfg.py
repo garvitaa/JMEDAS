@@ -23,7 +23,7 @@ process.source = cms.Source(
                                       )
     )
 
-process.cmsdasmetexercise5 = cms.EDAnalyzer('CMSDAS_MET_AnalysisExercise5',
+process.cmsdasmetexercise5 = cms.EDAnalyzer('CMSDAS_MET_AnalysisExercise4',
                                    doprints = cms.bool(False),
                                    metFilters = cms.InputTag("TriggerResults","","RECO"),
                                    beamHaloFilterSel = cms.string("Flag_globalSuperTightHalo2016Filter"),
