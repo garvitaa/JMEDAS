@@ -17,7 +17,7 @@ You can switch between the two by following the instructions below.
 Open a terminal/console, connect to `lxplus.cern.ch` and prepare your working area:
 
 ~~~
-ssh -L localhost:8888:localhost:8888 <YOUR USERNAME>@lxplus.cern.ch
+ssh <YOUR USERNAME>@lxplus.cern.ch
 cd /eos/user/${USER:0:1}/${USER}
 ~~~
 {: .language-bash}
@@ -47,7 +47,7 @@ cp -r ~/.globus /eos/user/${USER:0:1}/${USER}
 ## Cloning the repository
 
 ~~~
-git clone git@github.com:cms-jet/JMEDAS.git -b DASJune2025 --single-branch --depth=1
+git clone https://github.com/cms-jet/JMEDAS.git -b DASJune2025 --single-branch --depth=1
 cd JMEDAS/notebooks/DAS/
 ~~~
 {: .language-bash}
