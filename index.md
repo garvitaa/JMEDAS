@@ -46,22 +46,17 @@ _Follow the CMS workbook on jet analysis:_ [WorkBookJetAnalysis](https://twiki.c
 > * The exercises are prepared to be run directly from a cmslpc node, with non-interactive notebooks to follow and discuss the exercises.
 {: .testimonial}
 
-### Facilitators CMSDAS IIT Hyderabad 2025
+### Facilitators HATS@LPC 2025
 
 <img src="fig/photo_facilitators.png" alt="Photo of the facilitators" style="width:80%">
 
 ### Support
 
 Join the
-[SE-JetMET Mattermost channel](https://mattermost.web.cern.ch/cmsdasiithjune2025/channels/jetmet-se)
+[LPC-JetMET Mattermost channel](https://mattermost.web.cern.ch/lpcrun2discuss/channels/jetmet-pu)
 and don't hesitate to ask for help from the facilitators in the room.
 
 <!-- this is an html comment -->
 {% comment %} This is a comment in Liquid {% endcomment %}
-
-> ## Prerequisites
->
-> [CMS DAS Pre-exercises](https://indico.cern.ch/event/1553817/) 
-{: .prereq}
 
 {% include links.md %}
