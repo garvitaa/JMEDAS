@@ -18,7 +18,7 @@ keypoints:
 >
 > If using LXPLUS:
 > ~~~
-> cd <YOUR WORKING DIRECTORY>/notebooks/DAS/
+> cd <YOUR WORKING DIRECTORY>/notebooks
 > source /cvmfs/sft.cern.ch/lcg/views/LCG_105/x86_64-el9-gcc13-opt/setup.sh
 > jupyter notebook --no-browser --port=8888 --ip 127.0.0.1
 > ~~~

@@ -7,7 +7,7 @@ title: Setup
 In order to obtain EOS space for the exercises, open the
 [CERNBox website](https://cernbox.cern.ch/) and log in with your CERN credentials.
 This will provide you with 1 TB of space in
-`/eos/user/<USERNAME INITIAL>/<YOUR USERNAME>`, e.g. `/eos/user/c/clange`.
+`/eos/user/<USERNAME INITIAL>/<YOUR USERNAME>`, e.g. `/eos/user/g/gagarwal`.
 
 You can either use LXPLUS or SWAN to run the exercises.
 You can switch between the two by following the instructions below.
@@ -47,14 +47,14 @@ cp -r ~/.globus /eos/user/${USER:0:1}/${USER}
 ## Cloning the repository
 
 ~~~
-git clone https://github.com/cms-jet/JMEDAS.git -b DASJune2025 --single-branch --depth=1
-cd JMEDAS/notebooks/DAS/
+git clone https://github.com/cms-jet/JMEDAS.git -b HATS2025 --single-branch --depth=1
+cd JMEDAS/notebooks/
 ~~~
 {: .language-bash}
 
 > ## Remember
-> Once you clone the repository, using the `DASJune2025` branch, the exercise notebooks are located
-> in `JMEDAS/notebooks/DAS/`
+> Once you clone the repository, using the `HATS2025` branch, the exercise notebooks are located
+> in `JMEDAS/notebooks`
 {: .callout}
 
 Activate your grid certificate:
@@ -80,8 +80,8 @@ jupyter notebook --no-browser --port=8888 --ip 127.0.0.1
 If these two lines are running sucessfully, you should see something like this:
 
 ~~~
-[I 22:17:24.498 NotebookApp] Writing notebook server cookie secret to /afs/cern.ch/user/c/clange/.local/share/jupyter/runtime/notebook_cookie_secret
-[I 22:17:26.375 NotebookApp] Serving notebooks from local directory: /eos/home-c/clange/JMEDAS/notebooks/DAS
+[I 22:17:24.498 NotebookApp] Writing notebook server cookie secret to /afs/cern.ch/user/g/gagarwal/.local/share/jupyter/runtime/notebook_cookie_secret
+[I 22:17:26.375 NotebookApp] Serving notebooks from local directory: /eos/home-g/gagarwal/JMEDAS/notebooks/DAS
 [I 22:17:26.376 NotebookApp] Jupyter Notebook 6.4.0 is running at:
 [I 22:17:26.376 NotebookApp] http://127.0.0.1:8888/?token=b7de34fb074433b51831bdef0f0818f13279824ab33502cd
 [I 22:17:26.376 NotebookApp]  or http://127.0.0.1:8888/?token=b7de34fb074433b51831bdef0f0818f13279824ab33502cd
@@ -89,7 +89,7 @@ If these two lines are running sucessfully, you should see something like this:
 [C 22:17:26.384 NotebookApp]
 
     To access the notebook, open this file in a browser:
-        file:///afs/cern.ch/user/c/clange/.local/share/jupyter/runtime/nbserver-521240-open.html
+        file:///afs/cern.ch/user/g/gagarwal/.local/share/jupyter/runtime/nbserver-521240-open.html
     Or copy and paste one of these URLs:
         http://127.0.0.1:8888/?token=b7de34fb074433b51831bdef0f0818f13279824ab33502cd
      or http://127.0.0.1:8888/?token=b7de34fb074433b51831bdef0f0818f13279824ab33502cd
